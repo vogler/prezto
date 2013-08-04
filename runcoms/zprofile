@@ -4,4 +4,4 @@
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
-
+[[ $TTY == "/dev/tty1" ]] && exec startx

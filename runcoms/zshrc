@@ -28,6 +28,7 @@ function archive(){ # save file(s) as (encrypted) archive to dropbox
     rm -f $dst
     7z a -mhe=on -p -l $dst $* # if a password is given, the header will also be encrypted. resolves symlinks.
 }
+alias c='pygmentize -O style=monokai -f console256 -g'
 
 # TODO wasn't executed in .zprofile
 . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
