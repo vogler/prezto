@@ -14,7 +14,7 @@ fi
 
 alias v='vim'
 alias packer='packer --noedit --noconfirm'
-alias ocaml='rlwrap -H ~/.ocaml_history -D 2 -i -s 10000 ocaml'
+alias ocaml='rlwrap -H ~/.ocaml_history -D 2 -i -s 10000 ocamlfind batteries/ocaml'
 function cwdsh(){ if [[ -z $2 ]]; then eval $1; else pu $2; eval $1; po; fi }
 alias lh='cwdsh "ls -d .*"'
 alias lah='cwdsh "ls -lhd .*"'
