@@ -76,5 +76,3 @@ if [[ ! -d "$TMPPREFIX" ]]; then
   mkdir -p "$TMPPREFIX"
 fi
 
-# Arch: automatically startx
-[[ $TTY == "/dev/tty1" ]] && exec startx

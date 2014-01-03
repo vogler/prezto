@@ -20,3 +20,6 @@ if (( $+commands[fortune] )); then
   print
 fi
 
+# Arch: automatically startx
+[[ $TTY == "/dev/tty1" ]] && exec startx
+
