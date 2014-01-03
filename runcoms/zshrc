@@ -30,6 +30,3 @@ function archive(){ # save file(s) as (encrypted) archive to dropbox
 }
 alias c='pygmentize -O style=monokai -f console256 -g'
 
-# TODO wasn't executed in .zprofile
-. ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-
