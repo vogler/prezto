@@ -10,3 +10,6 @@ if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
+
+# Qt version (needs to be set so that qtchooser can run the correct qmake etc.)
+export QT_SELECT=4
