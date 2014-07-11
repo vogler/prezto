@@ -12,7 +12,7 @@ fi
 
 # Customize to your needs...
 
-alias v='vim'
+alias v='gvim -v'
 alias packer='packer --noedit --noconfirm'
 alias ocaml='rlwrap -H ~/.ocaml_history -D 2 -i -s 10000 ocamlfind batteries/ocaml'
 function cwdsh(){ if [[ -z $2 ]]; then eval $1; else pu $2; eval $1; po; fi }
@@ -30,3 +30,5 @@ function archive(){ # save file(s) as (encrypted) archive to dropbox
 }
 alias c='pygmentize -O style=monokai -f console256 -g'
 
+alias yumi='sudo yum install'
+function mkcd(){ mkdir -p $1; cd $1 }
