@@ -13,3 +13,5 @@ fi
 
 # Qt version (needs to be set so that qtchooser can run the correct qmake etc.)
 export QT_SELECT=4
+# Java
+export JAVA_HOME="/usr/lib/jvm/java-openjdk"
