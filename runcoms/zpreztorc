@@ -43,6 +43,8 @@ zstyle ':prezto:load' pmodule \
   'archive' \
   'fasd' \
   'pacman' \
+  'yum' \
+  'tmux' \
   'syntax-highlighting' \
   'prompt'
 #  'z'
@@ -158,5 +160,5 @@ zstyle ':prezto:module:terminal' auto-title 'yes'
 # zstyle ':prezto:module:tmux:auto-start' local 'yes'
 
 # Auto start a session when Zsh is launched in a SSH connection.
-# zstyle ':prezto:module:tmux:auto-start' remote 'yes'
+zstyle ':prezto:module:tmux:auto-start' remote 'yes'
 

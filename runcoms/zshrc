@@ -30,8 +30,6 @@ function archive(){ # save file(s) as (encrypted) archive to dropbox
 }
 alias c='pygmentize -O style=monokai -f console256 -g'
 
-alias yumi='sudo yum install'
-alias yumu='sudo yum upgrade'
 function mkcd(){ mkdir -p $1; cd $1 }
 alias cya='~/gitdrop.sh save && sudo pm-suspend'
 alias utop='utop -require batteries -require cil'
