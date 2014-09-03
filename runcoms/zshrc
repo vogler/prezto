@@ -38,3 +38,4 @@ function clip(){
 }
 # alias tmux='TERM=screen-256color tmux'
 alias pingor='ping -c 1 google.com || sudo systemctl restart dhcpcd@enp0s3.service'
+alias uniqc='sort | uniq -c | sort'
