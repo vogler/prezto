@@ -11,7 +11,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
-
 alias v='gvim -v'
 alias packer='packer --noedit --noconfirm'
 alias ocaml='rlwrap -H ~/.ocaml_history -D 2 -i -s 10000 ocamlfind batteries/ocaml'
