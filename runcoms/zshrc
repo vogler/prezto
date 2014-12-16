@@ -30,7 +30,7 @@ function archive(){ # save file(s) as (encrypted) archive to dropbox
 alias c='pygmentize -O style=monokai -f console256 -g'
 
 function mkcd(){ mkdir -p $1; cd $1 }
-function rmcwd(){ x=`pwd`; cd ..; rm -r $x }
+function rmcwd(){ x=`pwd`; if [ $x = `cd; pwd` ]; then echo "in home!"; else cd ..; rm -rf $x; fi }
 alias cya='~/gitdrop.sh save && sudo pm-suspend'
 alias utop='utop -require batteries -require cil'
 function clip(){
