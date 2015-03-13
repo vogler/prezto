@@ -83,7 +83,11 @@ fi
 export GOPATH=$HOME/.go
 export PATH=$PATH:$GOPATH/bin
 # Nix package manager
-if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then . ~/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then
+  . ~/.nix-profile/etc/profile.d/nix.sh; # added by Nix installer
+  # see https://nixos.org/wiki/Nix_on_OS_X#Using_Nix_on_10.9_and_10.10
+  export NIX_PATH=~/repos/nixpkgs:nixpkgs=~/repos/nixpkgs
+fi
 if [[ "$OSTYPE" == darwin* ]]; then
   if hash brew 2>/dev/null; then
     # use GNU tools instead, see https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/
