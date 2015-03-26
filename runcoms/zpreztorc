@@ -40,6 +40,7 @@ zstyle ':prezto:load' pmodule \
   'ocaml' \
   'haskell' \
   'ruby' \
+  'python' \
   'archive' \
   'fasd' \
   'pacman' \
