@@ -37,7 +37,6 @@ zstyle ':prezto:load' pmodule \
   'completion' \
   'git' \
   'node' \
-  'ocaml' \
   'haskell' \
   'ruby' \
   'python' \
@@ -48,6 +47,7 @@ zstyle ':prezto:load' pmodule \
   'tmux' \
   'syntax-highlighting' \
   'prompt'
+# 'ocaml' \
 #  'z'
 
 #
