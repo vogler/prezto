@@ -27,7 +27,7 @@ function archive(){ # save file(s) as (encrypted) archive to dropbox
     rm -f $dst
     7z a -mhe=on -p -l $dst $* # if a password is given, the header will also be encrypted. resolves symlinks.
 }
-alias c='pygmentize -O style=monokai -f console256 -g'
+# alias c='pygmentize -O style=monokai -f console256 -g'
 
 function mkcd(){ mkdir -p $1; cd $1 }
 function rmcwd(){ x=`pwd`; if [ $x = `cd; pwd` ]; then echo "in home!"; else cd ..; rm -rf $x; fi }
@@ -42,3 +42,6 @@ alias uniqc='sort | uniq -c | sort'
 if [[ "$OSTYPE" == darwin* ]]; then
   alias google-chrome='open -a "Google Chrome"'
 fi
+# git
+alias gwD='git diff --no-ext-diff --word-diff=color' # prezto has mode plain (uses color and delimiters [-removed-] and {+added+}) as default
+alias giD='git diff --no-ext-diff --cached --word-diff=color'
