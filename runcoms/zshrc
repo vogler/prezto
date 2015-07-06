@@ -41,6 +41,7 @@ alias pingor='ping -c 1 google.com || sudo systemctl restart dhcpcd@enp0s3.servi
 alias uniqc='sort | uniq -c | sort'
 if [[ "$OSTYPE" == darwin* ]]; then
   alias google-chrome='open -a "Google Chrome"'
+  alias subl='open -a "Sublime Text"'
 fi
 # git
 alias gwD='git diff --no-ext-diff --word-diff=color' # prezto has mode plain (uses color and delimiters [-removed-] and {+added+}) as default
