@@ -46,3 +46,5 @@ fi
 # git
 alias gwD='git diff --no-ext-diff --word-diff=color' # prezto has mode plain (uses color and delimiters [-removed-] and {+added+}) as default
 alias giD='git diff --no-ext-diff --cached --word-diff=color'
+
+eval "$(thefuck --alias)"
