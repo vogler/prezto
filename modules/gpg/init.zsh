@@ -15,12 +15,12 @@ _gpg_agent_conf="${GNUPGHOME:-$HOME/.gnupg}/gpg-agent.conf"
 _gpg_agent_env="${TMPDIR:-/tmp}/gpg-agent.env"
 
 # Start gpg-agent if not started.
-if [[ -z "$GPG_AGENT_INFO" ]]; then
+if [[ -z "$GPG_AGENT_INFO" && ! -S "${GNUPGHOME:-$HOME/.gnupg}/S.gpg-agent" ]]; then
   # Export environment variables.
   source "$_gpg_agent_env" 2> /dev/null
 
   # Start gpg-agent if not started.
-  if ! ps -U "$USER" -o pid,ucomm | grep -q -- "${${${(s.:.)GPG_AGENT_INFO}[2]}:--1} gpg-agent"; then
+  if ! ps -U "$LOGNAME" -o pid,ucomm | grep -q -- "${${${(s.:.)GPG_AGENT_INFO}[2]}:--1} gpg-agent"; then
     eval "$(gpg-agent --daemon | tee "$_gpg_agent_env")"
   fi
 fi
@@ -30,11 +30,20 @@ export GPG_TTY="$(tty)"
 
 # Integrate with the SSH module.
 if grep 'enable-ssh-support' "$_gpg_agent_conf" &> /dev/null; then
+  # Load required functions.
+  autoload -Uz add-zsh-hook
+
   # Override the ssh-agent environment file default path.
   _ssh_agent_env="$_gpg_agent_env"
 
   # Load the SSH module for additional processing.
   pmodload 'ssh'
+
+  # Updates the GPG-Agent TTY before every command since SSH does not set it.
+  function _gpg-agent-update-tty {
+    gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
+  }
+  add-zsh-hook preexec _gpg-agent-update-tty
 fi
 
 # Clean up.
