@@ -46,6 +46,7 @@ zstyle ':prezto:load' pmodule \
   'yum' \
   'tmux' \
   'syntax-highlighting' \
+  'autosuggestions' \
   'prompt'
 # 'ocaml' \
 #  'z'
@@ -55,7 +56,9 @@ zstyle ':prezto:load' pmodule \
 #
 
 # Set the query found color.
-# zstyle ':prezto:module:autosuggestions:color' found ''
+zstyle ':prezto:module:autosuggestions:color' found 'fg=245'
+# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=245'
+# ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
 
 #
 # Editor
