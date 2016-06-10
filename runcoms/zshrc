@@ -54,3 +54,11 @@ alias gwC='git clean -f -d'
 
 eval "$(thefuck --alias)"
 # function fsw(){ fswatch -o $1 | xargs -n1 "$2" }
+function ocr(){
+  ocamlc $1 && ./a.out && rm -f a.out
+  rm -f $(basename $1 .ml).cm?
+}
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+alias c=pygmentize
+function gac(){ gia $1; gc $1 }
