@@ -104,3 +104,5 @@ if [[ -f "$HOME/.opam/opam-init/init.zsh" ]]; then
   # enable backtraces on error
   export OCAMLRUNPARAM=b
 fi
+# haskell: stack
+export PATH=$PATH:$HOME/.local/bin
