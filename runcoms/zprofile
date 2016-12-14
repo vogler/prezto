@@ -106,3 +106,5 @@ if [[ -f "$HOME/.opam/opam-init/init.zsh" ]]; then
 fi
 # haskell: stack
 export PATH=$PATH:$HOME/.local/bin
+# otherwise perl complains in vscode's terminal
+export LC_ALL=en_US.UTF-8
