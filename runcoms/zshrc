@@ -62,3 +62,4 @@ function ocr(){
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 alias c=pygmentize
 function gac(){ gia $1; gc $1 }
+source "${ZDOTDIR:-$HOME}/.zprezto/gtm-terminal-plugin/gtm-plugin.sh" # git time metric
