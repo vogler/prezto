@@ -19,3 +19,6 @@
 [submodule "modules/autosuggestions/external"]
 	path = modules/autosuggestions/external
 	url = https://github.com/tarruda/zsh-autosuggestions
+[submodule "gtm-terminal-plugin"]
+	path = gtm-terminal-plugin
+	url = https://github.com/git-time-metric/gtm-terminal-plugin
