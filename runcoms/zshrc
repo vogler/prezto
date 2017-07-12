@@ -10,60 +10,63 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Customize to your needs...
+# macOS
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# shell
 alias v='gvim -v'
-alias packer='packer --noedit --noconfirm'
-alias ocaml='rlwrap -H ~/.ocaml_history -D 2 -i -s 10000 ocamlfind batteries/ocaml'
+alias c=pygmentize
+function mkcd(){ mkdir -p $1; cd $1 }
+function rmcwd(){ x=`pwd`; if [ $x = `cd; pwd` ]; then echo "in home!"; else cd ..; rm -rf $x; fi }
 function cwdsh(){ if [[ -z $2 ]]; then eval $1; else pu $2; eval $1; po; fi }
 alias lh='cwdsh "ls -d .*"'
 alias lah='cwdsh "ls -lhd .*"'
+alias uniqc='sort | uniq -c | sort'
 unalias top # prezto aliases it to htop if it's installed
 alias topm='\top -o %MEM'
 function psmem(){ # e.g. psmem chrome
     \top -bn 1 | grep $1 | cut -c32-36 - | awk '{s+=$1} END {print s}'
 }
-function archive(){ # save file(s) as (encrypted) archive to dropbox
-    dst=~/Dropbox/$1.7z
-    rm -f $dst
-    7z a -mhe=on -p -l $dst $* # if a password is given, the header will also be encrypted. resolves symlinks.
-}
-# alias c='pygmentize -O style=monokai -f console256 -g'
 
-function mkcd(){ mkdir -p $1; cd $1 }
-function rmcwd(){ x=`pwd`; if [ $x = `cd; pwd` ]; then echo "in home!"; else cd ..; rm -rf $x; fi }
-alias cya='~/gitdrop.sh save && sudo pm-suspend'
-alias utop='utop -require batteries -require cil'
-function clip(){
-    echo $* | xclip -selection clipboard
-}
-# alias tmux='TERM=screen-256color tmux'
-alias pingor='ping -c 1 google.com || sudo systemctl restart dhcpcd@enp0s3.service'
-alias uniqc='sort | uniq -c | sort'
-if [[ "$OSTYPE" == darwin* ]]; then
-  alias google-chrome='open -a "Google Chrome"'
-  alias subl='open -a "Sublime Text"'
-fi
 # git
 alias gwD='git diff --no-ext-diff --word-diff=color' # prezto has mode plain (uses color and delimiters [-removed-] and {+added+}) as default
 alias giD='git diff --no-ext-diff --cached --word-diff=color'
 function gfcd(){
   git clone $1 && cd $(basename $1 | sed 's/\.git//')
 }
-alias gwc='git clean -n -d' # how can I extend an already defined alias??
-alias gwC='git clean -f -d'
+alias gwc='git clean -d -n' # list
+alias gwC='git clean -d -f' # remove
+function gac(){ gia $1; gc $1 }
+function gcA(){ gia .; gc }
 
-eval "$(thefuck --alias)"
-# function fsw(){ fswatch -o $1 | xargs -n1 "$2" }
+## OCaml
+alias utop='utop -require batteries -require cil'
+alias ocaml='rlwrap -H ~/.ocaml_history -D 2 -i -s 10000 ocamlfind batteries/ocaml'
 function ocr(){
   ocamlc $1 && ./a.out && rm -f a.out
   rm -f $(basename $1 .ml).cm?
 }
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-alias c=pygmentize
-function gac(){ gia $1; gc $1 }
-# source "${ZDOTDIR:-$HOME}/.zprezto/gtm-terminal-plugin/gtm-plugin.sh" # git time metric
-
-# History
+## history
 # HISTSIZE=10000
 SAVEHIST=99000 # after ~1 year ~/.zhistory has 8300 lines, so this should last a lifetime...
+
+## graveyard
+function archive(){ # save file(s) as (encrypted) archive to dropbox
+    dst=~/Dropbox/$1.7z
+    rm -f $dst
+    7z a -mhe=on -p -l $dst $* # if a password is given, the header will also be encrypted. resolves symlinks.
+}
+if [[ "$OSTYPE" == darwin* ]]; then
+  alias google-chrome='open -a "Google Chrome"'
+  alias subl='open -a "Sublime Text"'
+fi
+# alias cya='~/gitdrop.sh save && sudo pm-suspend'
+# function clip(){
+#     echo $* | xclip -selection clipboard
+# }
+# alias pingor='ping -c 1 google.com || sudo systemctl restart dhcpcd@enp0s3.service'
+# eval "$(thefuck --alias)"
+# function fsw(){ fswatch -o $1 | xargs -n1 "$2" }
+# alias c='pygmentize -O style=monokai -f console256 -g'
+# source "${ZDOTDIR:-$HOME}/.zprezto/gtm-terminal-plugin/gtm-plugin.sh" # git time metric
