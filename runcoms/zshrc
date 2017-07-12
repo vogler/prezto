@@ -39,6 +39,12 @@ alias gwC='git clean -d -f' # remove
 function gac(){ gia $1; gc $1 }
 function gcA(){ gia .; gc }
 
+# git svn
+# git svn doesn't know autostash...
+function autostash(){ git stash | grep 'No local changes to save' && $* || ($* && git stash pop) }
+alias sgfr='autostash git svn rebase'
+alias sgc='git commit --verbose && git svn dcommit'
+
 ## OCaml
 alias utop='utop -require batteries -require cil'
 alias ocaml='rlwrap -H ~/.ocaml_history -D 2 -i -s 10000 ocamlfind batteries/ocaml'
