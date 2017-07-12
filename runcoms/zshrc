@@ -41,7 +41,7 @@ function gcA(){ gia .; gc }
 
 # git svn
 # git svn doesn't know autostash...
-function autostash(){ git stash | grep 'No local changes to save' && $* || ($* && git stash pop) }
+function autostash(){ git stash | grep 'Saved working directory' && $* && git stash pop -q || $* }
 alias sgfr='autostash git svn rebase'
 alias sgc='git commit --verbose && git svn dcommit'
 
