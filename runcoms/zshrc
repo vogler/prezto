@@ -47,12 +47,13 @@ alias sgfr='autostash git svn rebase'
 alias sgc='git commit --verbose && git svn dcommit'
 
 ## OCaml
-. $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+# opam configuration
+test -r /Users/voglerr/.opam/opam-init/init.zsh && . /Users/voglerr/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 export OPAMKEEPBUILDDIR=true # support Merlin's Locate on all libs
 export OCAMLPARAM="_,bin-annot=1"
 export OCAMLRUNPARAM=b # enable backtraces on error
-alias utop='utop -require batteries -require cil'
-alias ocaml='rlwrap -H ~/.ocaml_history -D 2 -i -s 10000 ocamlfind batteries/ocaml'
+alias utop='utop -init ~/dotfiles/.ocamlinit -require batteries -require cil'
+alias ocaml='rlwrap -H ~/.ocaml_history -D 2 -i -s 10000 ocaml'
 function ocr(){
   ocamlc $1 && ./a.out && rm -f a.out
   rm -f $(basename $1 .ml).cm?
