@@ -39,6 +39,7 @@ alias gwC='git clean -d -f' # remove
 function gac(){ gia $1; gc $1 }
 function gcA(){ gia .; gc }
 alias gbxr='git push origin --delete' # delete remote branch
+alias gsw='git stash push --include-untracked --keep-index' # replace prezto's gsw (push (instead of save) allows for pathspecs (since git 2.13), message with -m)
 
 # git svn
 # git svn doesn't know autostash...
