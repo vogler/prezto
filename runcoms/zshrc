@@ -14,7 +14,7 @@ fi
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # shell
-alias v='gvim -v'
+alias v=nvim
 alias c=pygmentize
 function mkcd(){ mkdir -p $1; cd $1 }
 function rmcwd(){ x=`pwd`; if [ $x = `cd; pwd` ]; then echo "in home!"; else cd ..; rm -rf $x; fi }
