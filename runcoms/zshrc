@@ -65,7 +65,6 @@ function ocr(){
 # HISTSIZE=10000
 SAVEHIST=99000 # after ~1 year ~/.zhistory has 8300 lines, so this should last a lifetime...
 
-## graveyard
 function archive(){ # save file(s) as (encrypted) archive to dropbox
     dst=~/Dropbox/$1.7z
     rm -f $dst
@@ -83,7 +82,7 @@ fi
 # eval "$(thefuck --alias)"
 # function fsw(){ fswatch -o $1 | xargs -n1 "$2" }
 # alias c='pygmentize -O style=monokai -f console256 -g'
-# source "${ZDOTDIR:-$HOME}/.zprezto/gtm-terminal-plugin/gtm-plugin.sh" # git time metric
+source "${ZDOTDIR:-$HOME}/.zprezto/gtm-terminal-plugin/gtm-plugin.sh" # git time metric
 
 # added by travis gem
 [ -f /Users/voglerr/.travis/travis.sh ] && source /Users/voglerr/.travis/travis.sh
