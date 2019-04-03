@@ -61,6 +61,9 @@ function ocr(){
   rm -f $(basename $1 .ml).cm?
 }
 
+# don't want to commit .ipython/ and its prompt is annoying
+alias ipython='ipython --no-confirm-exit'
+
 ## history
 # HISTSIZE=10000
 SAVEHIST=99000 # after ~1 year ~/.zhistory has 8300 lines, so this should last a lifetime...
