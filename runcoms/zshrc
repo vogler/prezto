@@ -83,9 +83,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
   alias google-chrome='open -a "Google Chrome"'
   alias subl='open -a "Sublime Text"'
 else
-  if hash brew 2>/dev/null; then
-    eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-  fi
+  [ -f ~/.linuxbrew/bin/brew ] && eval $(~/.linuxbrew/bin/brew shellenv)
 fi
 # alias cya='~/gitdrop.sh save && sudo pm-suspend'
 # function clip(){
