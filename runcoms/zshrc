@@ -82,6 +82,10 @@ function archive(){ # save file(s) as (encrypted) archive to dropbox
 if [[ "$OSTYPE" == darwin* ]]; then
   alias google-chrome='open -a "Google Chrome"'
   alias subl='open -a "Sublime Text"'
+else
+  if hash brew 2>/dev/null; then
+    eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+  fi
 fi
 # alias cya='~/gitdrop.sh save && sudo pm-suspend'
 # function clip(){
