@@ -65,6 +65,7 @@ test -r /Users/voglerr/.opam/opam-init/init.zsh && . /Users/voglerr/.opam/opam-i
 export OPAMKEEPBUILDDIR=true # support Merlin's Locate on all libs
 export OCAMLPARAM="_,bin-annot=1"
 export OCAMLRUNPARAM=b # enable backtraces on error
+export OPAMWITHDOC=true # opam install --with-doc ...
 alias utop='utop -init ~/dotfiles/.ocamlinit -require batteries -require cil'
 alias ocaml='rlwrap -H ~/.ocaml_history -D 2 -i -s 10000 ocaml'
 function ocr(){
