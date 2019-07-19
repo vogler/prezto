@@ -16,6 +16,13 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # shell
 alias v=nvim
 alias c=pygmentize
+function mv(){
+  dir=$(dirname -- "${@: -1}".); dir=${dir%.} # fix dirname not respecting trailing slashes by appending a . and removing it after!
+  if [ ! -z "$dir" ]; then # for . and options like --help, $dir is empty and mkdir would complain
+    mkdir --parents --verbose -- "$dir"
+  fi
+  command mv $@
+}
 function mkcd(){ mkdir -p $1; cd $1 }
 function rmcwd(){ x=`pwd`; if [ $x = `cd; pwd` ]; then echo "in home!"; else cd ..; rm -rf $x; fi }
 function cwdsh(){ if [[ -z $2 ]]; then eval $1; else pu $2; eval $1; po; fi }
