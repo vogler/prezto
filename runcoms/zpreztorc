@@ -71,6 +71,12 @@ zstyle ':prezto:module:autosuggestions:color' found 'fg=245'
 # zstyle ':prezto:module:completion:*:hosts' etc-host-ignores \
 #   '0.0.0.0' '127.0.0.1'
 
+# zsh completion settings, see https://github.com/sorin-ionescu/prezto/issues/1725
+zstyle ':completion:*:default' menu 'yes' 'search'
+zstyle ':completion:*' file-sort access
+zstyle ':completion:*' show-ambiguity 'true'
+# bindkey -M menuselect '^J' .accept-line # somehow this complains that the keymap does not exist (also if put in zshrc)
+
 #
 # Editor
 #
