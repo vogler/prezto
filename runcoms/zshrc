@@ -39,6 +39,8 @@ f() {
     fff "$@"
     cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
 }
+# mv $1 to $2 (e.g. /etc/foo to $2/etc/foo), ln -s and git add it
+# function gln(){ TODO }
 
 # git
 alias git=hub
