@@ -113,3 +113,9 @@ source "${ZDOTDIR:-$HOME}/.zprezto/gtm-terminal-plugin/gtm-plugin.sh" # git time
 
 # added by travis gem
 [ -f /Users/voglerr/.travis/travis.sh ] && source /Users/voglerr/.travis/travis.sh
+
+# https://github.com/zsh-users/zsh-autosuggestions#key-bindings
+# this should be in zpreztorc but there it has no effect
+# the suggested '^ ' is glob-alias, which is useful to completely expand aliases
+bindkey '^M' autosuggest-execute # was accept-line, but I use ^J (or ^O for accept+execute menu completion)
+bindkey '^X^T' autosuggest-toggle
