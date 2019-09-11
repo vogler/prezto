@@ -62,6 +62,10 @@ zstyle ':prezto:load' pmodule \
 zstyle ':prezto:module:autosuggestions:color' found 'fg=245'
 # ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=245'
 # ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
+# https://github.com/zsh-users/zsh-autosuggestions#key-bindings
+# the suggested '^ ' is glob-alias, which is useful to completely expand aliases
+bindkey '^M' autosuggest-execute # was accept-line, but I use ^J (or ^O for accept+execute menu completion)
+bindkey '^X^T' autosuggest-toggle
 
 #
 # Completions
