@@ -13,6 +13,16 @@ fi
 # macOS
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+# debian/ubuntu
+if [[ -e $commands[apt] ]]; then
+  alias agi='sudo apt-get install'
+  # alias agu='sudo apt-get upgrade -u'
+  alias agu='sudo apt-get update; sudo apt full-upgrade'
+  alias ags='apt-cache search'
+  alias agd='apt-cache show'
+  alias agp='apt-cache -t jessie-backports showpkg'
+fi
+
 # shell
 alias v=nvim
 alias c=pygmentize
@@ -43,7 +53,9 @@ f() {
 # function gln(){ TODO }
 
 # git
-alias git=hub
+if [[ -e $commands[hub] ]]; then
+  alias git=hub
+fi
 alias gwD='git diff --no-ext-diff --word-diff=color' # prezto has mode plain (uses color and delimiters [-removed-] and {+added+}) as default
 alias giD='git diff --no-ext-diff --cached --word-diff=color'
 function gfcd(){
@@ -110,7 +122,9 @@ fi
 # eval "$(thefuck --alias)"
 # function fsw(){ fswatch -o $1 | xargs -n1 "$2" }
 # alias c='pygmentize -O style=monokai -f console256 -g'
-source "${ZDOTDIR:-$HOME}/.zprezto/gtm-terminal-plugin/gtm-plugin.sh" # git time metric
+if [[ -e $commands[gtm] ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/gtm-terminal-plugin/gtm-plugin.sh" # git time metric
+fi
 
 # added by travis gem
 [ -f /Users/voglerr/.travis/travis.sh ] && source /Users/voglerr/.travis/travis.sh
