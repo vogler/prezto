@@ -73,7 +73,17 @@ alias gsW='git stash push --keep-index --include-untracked'
 # should only list all **/.git/logs/refs/stash
 # find -name stash -print0 | xargs -0 cat
 function git-add-all-submodules(){
-  for x in $(find . -type d) ; do if [ -d "${x}/.git" ] ; then cd "${x}" ; origin="$(git config --get remote.origin.url)" ; cd - 1>/dev/null; git submodule add "${origin}" "${x}" ; fi ; done
+  dir=${1-'.'} # will search in $1 but add in cwd!
+  for x in $(find $dir -type d) ; do if [ -d "${x}/.git" ] ; then cd "${x}" ; origin="$(git config --get remote.origin.url)" ; cd - 1>/dev/null; git submodule add "${origin}" "${x}" ; fi ; done
+}
+function git-repos(){
+  dir=${1-'.'}
+  if [[ -e $commands[fd] ]]; then
+    # https://github.com/sharkdp/fd is 2-5x faster than find for this query
+    fd --type d --hidden --no-ignore '^\.git$' $dir
+  else
+    find $dir -type d -name ".git"
+  fi
 }
 
 # git svn
