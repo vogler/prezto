@@ -92,6 +92,11 @@ function autostash(){ git stash | grep 'Saved working directory' && $* && git st
 alias sgfr='autostash git svn rebase'
 alias sgc='git commit --verbose && git svn dcommit'
 
+# C
+function gcc-run(){
+  gcc $1 && ./a.out && rm -f a.out
+}
+
 ## OCaml
 # opam configuration
 test -r /Users/voglerr/.opam/opam-init/init.zsh && . /Users/voglerr/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
