@@ -96,6 +96,12 @@ alias sgc='git commit --verbose && git svn dcommit'
 function gcc-run(){
   gcc $1 && ./a.out && rm -f a.out
 }
+function gcc-eval(){ # needs double escape: gcc-eval 'printf("INT_MAX: %d\\n", INT_MAX);'
+  echo "#include <stdlib.h>\n #include <stdio.h>\n #include <assert.h>\n\
+    #include <limits.h>\n #include <stdint.h>\n #include <math.h>\n\
+    int main(){ $1 }" >! /tmp/gcc-eval.c &&
+    gcc-run /tmp/gcc-eval.c
+}
 
 ## OCaml
 # opam configuration
