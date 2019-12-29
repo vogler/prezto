@@ -45,6 +45,7 @@ zstyle ':prezto:load' pmodule \
   'pacman' \
   'yum' \
   'tmux' \
+  'wakatime' \
   'syntax-highlighting' \
   'autosuggestions' \
   'prompt'
