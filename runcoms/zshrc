@@ -133,6 +133,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
   alias google-chrome='open -a "Google Chrome"'
   alias subl='open -a "Sublime Text"'
 else
+  [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
   [ -f ~/.linuxbrew/bin/brew ] && eval $(~/.linuxbrew/bin/brew shellenv)
 fi
 # alias cya='~/gitdrop.sh save && sudo pm-suspend'
