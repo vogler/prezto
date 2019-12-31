@@ -33,4 +33,5 @@
 	url = https://github.com/romkatv/powerlevel10k.git
 [submodule "gtm-terminal-plugin"]
 	path = gtm-terminal-plugin
-	url = https://github.com/git-time-metric/gtm-terminal-plugin
+	url = https://github.com/akatrevorjay/gtm-terminal-plugin.git
+	branch = pr/fix-pwd
