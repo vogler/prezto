@@ -157,3 +157,9 @@ fi
 bindkey '^ ' autosuggest-execute
 bindkey '^X^I' glob-alias # '^ ' was glob-alias, which is useful to completely expand aliases and variables
 bindkey '^X^T' autosuggest-toggle
+
+if [[ -e $commands[broot] ]]; then
+  if [[ "$OSTYPE" == darwin* ]]; then
+    source ~/Library/Preferences/org.dystroy.broot/launcher/bash/br
+  fi
+fi
