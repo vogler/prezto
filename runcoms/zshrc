@@ -12,6 +12,12 @@ fi
 
 # macOS
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+function brew-upgrade-each() {
+  brew outdated
+  for p in $(brew outdated | cut -f1); do
+    brew upgrade $p;
+  done
+}
 
 # debian/ubuntu
 if [[ -e $commands[apt] ]]; then
