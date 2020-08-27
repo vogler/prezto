@@ -75,7 +75,7 @@ function gac(){ gia $1; gc $1 }
 function gcA(){ gia .; gc }
 alias gbxr='git push origin --delete' # delete remote branch
 alias gbv='git branch -vv' # instead of just -v: also show remote-tracking branches
-alias glg='git log --all --graph --pretty=format:"${_git_log_medium_format}"' # instead of git log --topo-order --graph --pretty=format:"${_git_log_oneline_format}"
+alias glg='git log --all --graph' # instead of git log --topo-order --graph --pretty=format:"${_git_log_oneline_format}"
 alias gsw='git stash push --keep-index' # replace prezto's gsw (push (instead of save) allows for pathspecs (since git 2.13), message with -m)
 alias gsW='git stash push --keep-index --include-untracked'
 # TODO list stashes and unpushed changes
