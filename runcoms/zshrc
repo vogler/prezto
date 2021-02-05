@@ -1,4 +1,3 @@
-zmodload zsh/zprof
 #
 # Executes commands at the start of an interactive session.
 #
@@ -173,5 +172,3 @@ if [[ -e $commands[broot] ]]; then
     source ~/Library/Preferences/org.dystroy.broot/launcher/bash/br
   fi
 fi
-
-zprof
