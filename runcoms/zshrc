@@ -172,3 +172,7 @@ if [[ -e $commands[broot] ]]; then
     source ~/Library/Preferences/org.dystroy.broot/launcher/bash/br
   fi
 fi
+
+function http-status(){
+  curl -sI $1 | head -n1 | cut -d' ' -f2
+}
