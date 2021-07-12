@@ -77,12 +77,12 @@ if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then
   export NIX_PATH=~/repos/nixpkgs:nixpkgs=~/repos/nixpkgs
 fi
 if [[ "$OSTYPE" == darwin* ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
   if hash brew 2>/dev/null; then
     # use GNU tools instead, see https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/
     export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/grep/libexec/gnubin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/bin:$PATH"
     # manpath executable is used to generate path from PATH (but only if MANPATH is not set) 
     # export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
 fi
 # haskell: stack
