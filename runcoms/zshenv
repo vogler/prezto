@@ -15,7 +15,8 @@ fi
 export QT_SELECT=4
 # Java
 if [[ "$OSTYPE" == darwin* ]]; then
-  export JAVA_HOME=$(/usr/libexec/java_home)
+  # fails if there is no java installed; TODO uncomment when needed
+  # export JAVA_HOME=$(/usr/libexec/java_home)
 else
   export JAVA_HOME="/usr/lib/jvm/java-openjdk"
 fi
