@@ -50,6 +50,10 @@ alias topm='\top -o %MEM'
 function psmem(){ # e.g. psmem chrome
     \top -bn 1 | grep $1 | cut -c32-36 - | awk '{s+=$1} END {print s}'
 }
+# https://unix.stackexchange.com/a/81699/37512
+alias wanip='dig @resolver4.opendns.com myip.opendns.com +short' 
+alias wanip4='dig @resolver4.opendns.com myip.opendns.com +short -4'
+alias wanip6='dig @resolver1.ipv6-sandbox.opendns.com AAAA myip.opendns.com +short -6'
 alias ts="ts '%Y-%m-%d %H:%M:%S'"
 # if brew command command-not-found-init > /dev/null 2>&1; then eval "$(brew command-not-found-init)"; fi # this takes >1s! do not use!
 # f for fff (file manager, https://github.com/dylanaraps/fff) with cd on exit (q), use ctrl-c to exit w/o cd
