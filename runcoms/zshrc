@@ -32,7 +32,7 @@ fi
 # shell
 alias v=nvim
 alias c=pygmentize
-function mv(){
+function mvp(){ # create parent directories before move
   dir=$(dirname -- "${@: -1}".); dir=${dir%.} # fix dirname not respecting trailing slashes by appending a . and removing it after!
   if [ ! -z "$dir" ]; then # for . and options like --help, $dir is empty and mkdir would complain
     mkdir --parents --verbose -- "$dir"
@@ -43,8 +43,9 @@ function dus() { du -h -d1 $1 | sort -h }
 function mkcd(){ mkdir -p $1; cd $1 }
 function rmcwd(){ x=`pwd`; if [ $x = `cd; pwd` ]; then echo "in home!"; else cd ..; rm -rf $x; fi }
 function cwdsh(){ if [[ -z $2 ]]; then eval $1; else pu $2; eval $1; po; fi }
-alias lh='cwdsh "ls -d .*"'
-alias lah='cwdsh "ls -lhd .*"'
+alias ll='exa -l --git --group-directories-first' # prezto's ll is just 'ls -lh'
+alias lh='cwdsh "ls -d .*"' # only ls hidden files
+alias lah='cwdsh "ls -lhd .*"' # as above but long
 alias uniqc='sort | uniq -c | sort'
 alias topm='\top -o %MEM'
 function psmem(){ # e.g. psmem chrome
