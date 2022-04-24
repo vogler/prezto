@@ -49,6 +49,7 @@ typeset -gU cdpath fpath mailpath path
 # )
 
 # Set the list of directories that Zsh searches for programs.
+# (N) = NULL_GLOB = optional, no error
 path=(
   $HOME/{,s}bin(N)
   /opt/{local}/{,s}bin(N) # homebrew,local -> local since otherwise `brew shellenv` below does nothing, but is needed for setting HOMEBREW_PREFIX, MANPATH etc.
@@ -75,27 +76,20 @@ if [[ -z "$LESSOPEN" ]] && (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
 
-# paths, init scripts...
-# Go
-export GOPATH=$HOME/.go
-export PATH=$PATH:$GOPATH/bin
-# Nix package manager
-if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then
-  . ~/.nix-profile/etc/profile.d/nix.sh; # added by Nix installer
-  # see https://nixos.org/wiki/Nix_on_OS_X#Using_Nix_on_10.9_and_10.10
-  export NIX_PATH=~/repos/nixpkgs:nixpkgs=~/repos/nixpkgs
-fi
+
+# customizations: paths, init scripts...
 if [[ "$OSTYPE" == darwin* ]]; then
   [[ $(uname -m) == "arm64" ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
   if hash brew 2>/dev/null; then
     # use GNU tools instead, see https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/
-    export PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$HOMEBREW_PREFIX/opt/grep/libexec/gnubin:$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin:$PATH"
+    path=(
+      $HOMEBREW_PREFIX/opt/{coreutils,grep,gnu-sed}/libexec/gnubin(N)
+      $path
+    )
     # manpath executable is used to generate path from PATH (but only if MANPATH is not set) 
     # export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
   fi
 fi
-# haskell: stack
+# ~/dotfiles/bin mapped to ~/.local/bin instead of just ~/bin since ~/.local is already used by nvim, delta, gh, heroku
 export PATH=$PATH:$HOME/.local/bin
-# otherwise perl complains in vscode's terminal
-export LC_ALL=en_US.UTF-8
-export PATH=$PATH:$HOME/.cargo/bin
+# export LC_ALL=en_US.UTF-8 # otherwise perl complains in vscode's terminal
