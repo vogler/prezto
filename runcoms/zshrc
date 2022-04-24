@@ -43,7 +43,7 @@ function dus() { du -h -d1 $1 | sort -h }
 function mkcd(){ mkdir -p $1; cd $1 }
 function rmcwd(){ x=`pwd`; if [ $x = `cd; pwd` ]; then echo "in home!"; else cd ..; rm -rf $x; fi }
 function cwdsh(){ if [[ -z $2 ]]; then eval $1; else pu $2; eval $1; po; fi }
-alias ll='exa -l --git --group-directories-first' # prezto's ll is just 'ls -lh'
+alias le='exa -l --git --group-directories-first' # prezto's ll is just 'ls -lh'
 alias lh='cwdsh "ls -d .*"' # only ls hidden files
 alias lah='cwdsh "ls -lhd .*"' # as above but long
 alias uniqc='sort | uniq -c | sort'
