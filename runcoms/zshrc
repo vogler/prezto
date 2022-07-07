@@ -92,6 +92,7 @@ function git-add-all-submodules(){
   dir=${1-'.'} # will search in $1 but add in cwd!
   for x in $(find $dir -type d) ; do if [ -d "${x}/.git" ] ; then cd "${x}" ; origin="$(git config --get remote.origin.url)" ; cd - 1>/dev/null; git submodule add "${origin}" "${x}" ; fi ; done
 }
+# find all .git directories in $1 or .
 function git-repos(){
   dir=${1-'.'}
   if [[ -e $commands[fd] ]]; then
@@ -101,6 +102,8 @@ function git-repos(){
     find $dir -type d -name ".git"
   fi
 }
+# list PR that introduced current commit in browser
+alias gh-pr='gh pr list --state all --search $(git rev-parse HEAD) -w'
 
 # git svn
 # git svn doesn't know autostash...
