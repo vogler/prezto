@@ -89,6 +89,11 @@ if [[ "$OSTYPE" == darwin* ]]; then
     # manpath executable is used to generate path from PATH (but only if MANPATH is not set) 
     # export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
   fi
+elif [[ "$OSTYPE" == linux* ]]; then
+  path=(
+    /snap/bin(N)
+    $path
+  )
 fi
 # ~/dotfiles/bin mapped to ~/.local/bin instead of just ~/bin since ~/.local is already used by nvim, delta, gh, heroku
 export PATH=$PATH:$HOME/.local/bin
