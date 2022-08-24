@@ -29,9 +29,12 @@ zstyle ':prezto:*:*' color 'yes'
 
 # Set the Prezto modules to load (browse modules).
 # The order matters.
-# My stuff added after completion.
-# prompt moved to end, syntax-highlighting should be second to last.
-# Using fasd instead of z.
+# Added my selection of modules between the empty lines.
+# - using 'fasd' instead of 'z'
+# - could add 'gnu-utility' before 'utility' for interactive use of GNU versions (from homebrew, prefixed with g) instead of BSD versions that come with macOS - currently I add them to PATH in zprofile
+# Constraints
+# - 'git' before 'completion'
+# - 'syntax-highlighting' before 'history-substring-search', 'autosuggestions', 'prompt'
 zstyle ':prezto:load' pmodule \
   'environment' \
   'terminal' \
@@ -40,8 +43,7 @@ zstyle ':prezto:load' pmodule \
   'directory' \
   'spectrum' \
   'utility' \
-  'completion' \
-  'history-substring-search' \
+\
   'git' \
   'python' \
   'node' \
@@ -53,6 +55,9 @@ zstyle ':prezto:load' pmodule \
   'wakatime' \
   'syntax-highlighting' \
   'autosuggestions' \
+\
+  'completion' \
+  'history-substring-search' \
   'prompt'
 # 'ocaml' \
 # 'haskell' \
