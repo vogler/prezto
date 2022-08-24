@@ -139,10 +139,6 @@ function ocr(){
 # don't want to commit .ipython/ and its prompt is annoying
 alias ipython='ipython --no-confirm-exit'
 
-## history
-# HISTSIZE=10000
-SAVEHIST=99000 # after ~1 year ~/.zhistory has 8300 lines, so this should last a lifetime...
-
 function archive(){ # save file(s) as (encrypted) archive to dropbox
     dst=~/Dropbox/$1.7z
     rm -f $dst

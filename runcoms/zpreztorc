@@ -120,7 +120,8 @@ zstyle ':prezto:module:editor' key-bindings 'emacs'
 # zstyle ':prezto:module:history' histsize 10000
 
 # Set the maximum number of history events to save in the history file.
-# zstyle ':prezto:module:history' savehist 10000
+zstyle ':prezto:module:history' savehist 99000
+# SAVEHIST defaults to HISTSIZE (10000), after ~1 year ~/.zsh_history was 8300 lines, so 99k should last a lifetime...
 
 #
 # History Substring Search
