@@ -162,8 +162,10 @@ zstyle ':prezto:module:history' savehist 99000
 # Set the prompt theme to load.
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
-# zstyle ':prezto:module:prompt' theme 'sorin'
-zstyle ':prezto:module:prompt' theme 'pure'
+zstyle ':prezto:module:prompt' theme 'powerlevel10k'
+# https://github.com/romkatv/powerlevel10k
+# Config in dotfiles/.p10k.zsh
+# Used 'pure' before, but 'powerlevel10k' has a pure style, is much faster, has more options, and a nice wizard `p10k configure`.
 
 # Set the working directory prompt display length.
 # By default, it is set to 'short'. Set it to 'long' (without '~' expansion)
