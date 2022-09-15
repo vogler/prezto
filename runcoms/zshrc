@@ -191,5 +191,7 @@ function http-status(){
   curl -sI $1 | head -n1 | cut -d' ' -f2
 }
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# Powerlevel10k prompt: run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# fzf fuzzy finder: ** for completion, ctrl-t for files, alt-c for cd, ctrl-r for history
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
