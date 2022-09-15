@@ -195,3 +195,11 @@ function http-status(){
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 # fzf fuzzy finder: ** for completion, ctrl-t for files, alt-c for cd, ctrl-r for history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# $(brew --prefix)/opt/fzf/install generated ~/.fzf.zsh but install script had prompts and file is only for macOS. Inlined:
+if [[ "$OSTYPE" == darwin* ]]; then # macOS
+  source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
+  source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+else # Debian: files as per `dpkg -L fzf`
+  source "/usr/share/doc/fzf/examples/completion.zsh" 2> /dev/null
+  source "/usr/share/doc/fzf/examples/key-bindings.zsh"
+fi
