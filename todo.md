@@ -1,8 +1,7 @@
 # autocomplete requires too many tabs
 https://github.com/sorin-ionescu/prezto/issues/1725
 
-
-# dirty-indicator for make
+# prompt: dirty-indicator for make
 n:*:default' menu 'yes' 'search'
 n::complete:*' expand 'prefix' 'suffix'
 Like for git: show some icon if make would have something to do.
