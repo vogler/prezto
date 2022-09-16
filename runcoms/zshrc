@@ -93,11 +93,11 @@ alias glg='git log --all --graph' # instead of git log --topo-order --graph --pr
 alias gsw='git stash push --keep-index' # replace prezto's gsw (push (instead of save) allows for pathspecs (since git 2.13), message with -m)
 alias gsW='git stash push --keep-index --include-untracked'
 # TODO list stashes and unpushed changes
-# should only list all **/.git/logs/refs/stash
-# find -name stash -print0 | xargs -0 cat
+  # should only list all **/.git/logs/refs/stash
+  # find -name stash -print0 | xargs -0 cat
 function git-add-all-submodules(){
   dir=${1-'.'} # will search in $1 but add in cwd!
-  for x in $(find $dir -type d) ; do if [ -d "${x}/.git" ] ; then cd "${x}" ; origin="$(git config --get remote.origin.url)" ; cd - 1>/dev/null; git submodule add "${origin}" "${x}" ; fi ; done
+  for x in $(find $dir -type d -mindepth 1) ; do if [ -d "${x}/.git" ] ; then cd "${x}" ; origin="$(git config --get remote.origin.url)" ; cd - 1>/dev/null; echo "$x - $origin"; echo -n "    "; git submodule add "${origin}" "${x}" ; fi ; done
 }
 # find all .git directories in $1 or .
 function git-repos(){
