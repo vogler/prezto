@@ -109,6 +109,8 @@ function git-repos(){
     find $dir -type d -name ".git"
   fi
 }
+# list my repos on github
+alias gh-repos='gh repo list vogler -L999'
 # list PR that introduced current commit in browser
 alias gh-pr='gh pr list --state all --search $(git rev-parse HEAD) -w'
 
