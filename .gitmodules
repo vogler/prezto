@@ -28,8 +28,7 @@
 [submodule "modules/prompt/external/powerlevel10k"]
 	path = modules/prompt/external/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
+	shallow = true
 [submodule "gtm-terminal-plugin"]
 	path = gtm-terminal-plugin
 	url = https://github.com/akatrevorjay/gtm-terminal-plugin.git
-	branch = pr/fix-pwd
-	shallow = true
