@@ -83,7 +83,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
   if hash brew 2>/dev/null; then
     # use GNU tools instead, see https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/
     path=(
-      $HOMEBREW_PREFIX/opt/{coreutils,grep,gnu-sed}/libexec/gnubin(N)
+      $HOMEBREW_PREFIX/opt/{coreutils,findutils,grep,gnu-sed}/libexec/gnubin(N)
       $path
     )
     # manpath executable is used to generate path from PATH (but only if MANPATH is not set) 
