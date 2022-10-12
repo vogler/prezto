@@ -17,14 +17,15 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# the following should be in zpreztorc but bindkey has no effect there
+# https://github.com/zsh-users/zsh-autosuggestions#key-bindings
+# use the suggested '^ ' since I need ^M (CR, enter key) and ^J (LF) for accept-line and ^O for accept+execute menu completion
+bindkey '^ ' autosuggest-execute
+bindkey '^X^I' glob-alias # '^ ' was glob-alias, which is useful to completely expand aliases and variables
+bindkey '^X^T' autosuggest-toggle
+
 # macOS
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-function brew-upgrade-each() {
-  brew outdated
-  for p in $(brew outdated | cut -f1); do
-    brew upgrade $p;
-  done
-}
 
 # debian/ubuntu
 if [[ -e $commands[apt] ]]; then
@@ -66,11 +67,6 @@ alias wanip6='dig @resolver1.ipv6-sandbox.opendns.com AAAA myip.opendns.com +sho
 alias newip='wanip6 && fritzconnection --reconnect; until ping -c1 google.de >/dev/null 2>&1; do sleep 1; done; wanip6' # pip install fritzconnection
 alias ts="ts '%Y-%m-%d %H:%M:%S'"
 # if brew command command-not-found-init > /dev/null 2>&1; then eval "$(brew command-not-found-init)"; fi # this takes >1s! do not use!
-# f for fff (file manager, https://github.com/dylanaraps/fff) with cd on exit (q), use ctrl-c to exit w/o cd
-f() {
-    fff "$@"
-    cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
-}
 # mv $1 to $2 (e.g. /etc/foo to $2/etc/foo), ln -s and git add it
 # function gln(){ TODO }
 
@@ -153,13 +149,13 @@ function archive(){ # save file(s) as (encrypted) archive to dropbox
     rm -f $dst
     7z a -mhe=on -p -l $dst $* # if a password is given, the header will also be encrypted. resolves symlinks.
 }
-if [[ "$OSTYPE" == darwin* ]]; then
-  alias google-chrome='open -a "Google Chrome"'
-  alias subl='open -a "Sublime Text"'
-else
-  [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-  [ -f ~/.linuxbrew/bin/brew ] && eval $(~/.linuxbrew/bin/brew shellenv)
-fi
+# if [[ "$OSTYPE" == darwin* ]]; then
+#   alias google-chrome='open -a "Google Chrome"'
+#   alias subl='open -a "Sublime Text"'
+# else
+#   [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+#   [ -f ~/.linuxbrew/bin/brew ] && eval $(~/.linuxbrew/bin/brew shellenv)
+# fi
 # alias cya='~/gitdrop.sh save && sudo pm-suspend'
 # function clip(){
 #     echo $* | xclip -selection clipboard
@@ -168,19 +164,16 @@ fi
 # eval "$(thefuck --alias)"
 # function fsw(){ fswatch -o $1 | xargs -n1 "$2" }
 # alias c='pygmentize -O style=monokai -f console256 -g'
+
 if [[ -e $commands[gtm] ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/gtm-terminal-plugin/gtm-plugin.sh" # git time metric
 fi
 
-# added by travis gem
-[ -f /Users/voglerr/.travis/travis.sh ] && source /Users/voglerr/.travis/travis.sh
-
-# the following should be in zpreztorc but bindkey has no effect there
-# https://github.com/zsh-users/zsh-autosuggestions#key-bindings
-# use the suggested '^ ' since I need ^M (CR, enter key) and ^J (LF) for accept-line and ^O for accept+execute menu completion
-bindkey '^ ' autosuggest-execute
-bindkey '^X^I' glob-alias # '^ ' was glob-alias, which is useful to completely expand aliases and variables
-bindkey '^X^T' autosuggest-toggle
+# f for fff (file manager, https://github.com/dylanaraps/fff) with cd on exit (q), use ctrl-c to exit w/o cd
+f() {
+    fff "$@"
+    cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
+}
 
 # https://github.com/Canop/broot - function needed to cd into directory on alt+enter
 # `broot -- install` modified too much
