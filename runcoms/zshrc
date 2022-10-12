@@ -69,6 +69,7 @@ alias ts="ts '%Y-%m-%d %H:%M:%S'"
 # if brew command command-not-found-init > /dev/null 2>&1; then eval "$(brew command-not-found-init)"; fi # this takes >1s! do not use!
 # mv $1 to $2 (e.g. /etc/foo to $2/etc/foo), ln -s and git add it
 # function gln(){ TODO }
+alias co2w='watch "mosquitto_sub -h rpi3 -t sensors/mh-z19b -C 1 | jq .co2 | figlet -f doh"'
 
 # git
 if [[ -e $commands[hub] ]]; then
@@ -127,8 +128,7 @@ function gcc-eval(){ # needs double escape: gcc-eval 'printf("INT_MAX: %d\\n", I
     gcc-run /tmp/gcc-eval.c
 }
 
-## OCaml
-# opam configuration
+# OCaml, opam
 test -r /Users/voglerr/.opam/opam-init/init.zsh && . /Users/voglerr/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 export OPAMKEEPBUILDDIR=true # support Merlin's Locate on all libs
 export OCAMLPARAM="_,bin-annot=1"
@@ -141,8 +141,8 @@ function ocr(){
   rm -f $(basename $1 .ml).cm?
 }
 
-# don't want to commit .ipython/ and its prompt is annoying
-alias ipython='ipython --no-confirm-exit'
+# Python
+alias ipython='ipython --no-confirm-exit' # don't want to commit .ipython/ and its prompt is annoying
 
 function archive(){ # save file(s) as (encrypted) archive to dropbox
     dst=~/Dropbox/$1.7z
