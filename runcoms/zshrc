@@ -69,6 +69,8 @@ alias ts="ts '%Y-%m-%d %H:%M:%S'"
 # if brew command command-not-found-init > /dev/null 2>&1; then eval "$(brew command-not-found-init)"; fi # this takes >1s! do not use!
 # mv $1 to $2 (e.g. /etc/foo to $2/etc/foo), ln -s and git add it
 # function gln(){ TODO }
+function http-status(){ curl -sI $1 | head -n1 | cut -d' ' -f2 }
+function curl-ua() { curl -s $1 -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36' --compressed }
 alias co2w='watch "mosquitto_sub -h rpi3 -t sensors/mh-z19b -C 1 | jq .co2 | figlet -f doh"'
 
 # git
@@ -190,10 +192,6 @@ function br {
         rm -f "$cmd_file"
         return "$code"
     fi
-}
-
-function http-status(){
-  curl -sI $1 | head -n1 | cut -d' ' -f2
 }
 
 # Powerlevel10k prompt: run `p10k configure` or edit ~/.p10k.zsh.
