@@ -74,14 +74,20 @@ alias ts="ts '%Y-%m-%d %H:%M:%S'" # prepends date & time as e.g. '2023-04-20 14:
 function http-status(){ curl -sI $1 | head -n1 | cut -d' ' -f2 }
 function curl-ua() { curl -s $1 -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36' --compressed }
 alias co2w='watch "mosquitto_sub -h rpi3 -t sensors/mh-z19b -C 1 | jq .co2 | figlet -f doh"'
+
 # convert all timestamps (10 digits) in a file or stdin to human-readable date and time
 # https://stackoverflow.com/questions/2371248/how-to-convert-timestamps-to-dates-in-bash
 # https://stackoverflow.com/questions/14036116/convert-timestamp-to-datetime-with-sed
 # single timestamp: `date -r 1681993846` (macOS date), `date -d @1681993846` (GNU date)
 # macOS awk has no strftime, would need `brew install gawk` -> use perl (can do `echo 1681993846 | ts2date` or `ts2date ~/.zsh_history`):
 alias ts2date="perl -Mposix -pe 's/([0-9]{10})/POSIX::strftime( \"%Y-%m-%d %H:%M:%S\", gmtime(\$1))/eg'"
+
 # searchable history with human-readable dates (tac reverses lines (most recent on top)):
+# https://stackoverflow.com/questions/34150889/what-is-the-format-of-shell-history-files
+# : <beginning time>:<elapsed seconds>;<command>
+# Note that <elapsed seconds> is 0 most of the time since SHARE_HISTORY is set by prezto which is incompatible with INC_APPEND_HISTORY_TIME. Also see modules/history.
 alias zsh-history="cat ~/.zsh_history | sed 's/^: //; s/:/  /; s/;/\t/' | ts2date | tac | less"
+
 
 # git
 if [[ -e $commands[hub] ]]; then
