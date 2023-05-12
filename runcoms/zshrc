@@ -106,7 +106,7 @@ alias gbxr='git push origin --delete' # delete remote branch
 alias gbv='git branch -vv' # instead of just -v: also show remote-tracking branches
 alias glg='git log --all --graph' # instead of git log --topo-order --graph --pretty=format:"${_git_log_oneline_format}"
 function glcb(){ # git log for current/child branch commits only
-  parent=${1-$(git parent)}
+  parent=${1-$(git parent)} # see alias in ~/.gitconfig
   if [ -z "$parent" ]; then
     echo "No parent for current branch!"
   else
