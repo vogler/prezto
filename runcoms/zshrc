@@ -62,7 +62,7 @@ function psmem(){ # e.g. psmem chrome
     \top -bn 1 | grep $1 | cut -c32-36 - | awk '{s+=$1} END {print s}'
 }
 # https://unix.stackexchange.com/a/81699/37512
-alias wanip='dig @resolver4.opendns.com myip.opendns.com +short' 
+alias wanip='dig @resolver4.opendns.com myip.opendns.com +short'
 alias wanip4='dig @resolver4.opendns.com myip.opendns.com +short -4'
 alias wanip6='dig @resolver1.ipv6-sandbox.opendns.com AAAA myip.opendns.com +short -6'
 # alias newip='[[ -z $FRITZ_PASSWORD ]] && echo "Enter FritzBox password:" && read -s FRITZ_PASSWORD; wanip6 && fritzconnection --reconnect' # password was just needed for fritzhosts, but is also not checked, so `FRITZ_PASSWORD=foo fritzhosts` also works
@@ -209,11 +209,11 @@ function br {
     cmd_file=$(mktemp)
     if broot --outcmd "$cmd_file" "$@"; then
         cmd=$(<"$cmd_file")
-        rm -f "$cmd_file"
+        command rm -f "$cmd_file"
         eval "$cmd"
     else
         code=$?
-        rm -f "$cmd_file"
+        command rm -f "$cmd_file"
         return "$code"
     fi
 }
