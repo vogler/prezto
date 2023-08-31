@@ -93,6 +93,7 @@ alias zsh-history="cat ~/.zsh_history | sed 's/^: //; s/:/  /; s/;/\t/' | ts2dat
 if [[ -e $commands[hub] ]]; then
   alias git=hub # https://github.com/cli/cli/blob/trunk/docs/gh-vs-hub.md
 fi
+alias lg=lazygit
 alias gwD='git diff --no-ext-diff --word-diff=color' # prezto has mode plain (uses color and delimiters [-removed-] and {+added+}) as default
 alias giD='git diff --no-ext-diff --cached --word-diff=color'
 function gfcd(){
