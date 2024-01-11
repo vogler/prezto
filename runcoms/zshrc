@@ -61,6 +61,7 @@ alias topm='\top -o %MEM'
 function psmem(){ # e.g. psmem chrome
     \top -bn 1 | grep $1 | cut -c32-36 - | awk '{s+=$1} END {print s}'
 }
+compdef _pids vmrss # pid completion for ~/dotfiles/bin/vmrss
 # https://unix.stackexchange.com/a/81699/37512
 alias wanip='dig @resolver4.opendns.com myip.opendns.com +short'
 alias wanip4='dig @resolver4.opendns.com myip.opendns.com +short -4'
