@@ -43,6 +43,7 @@ fi
 alias v=nvim
 # alias c=pygmentize
 alias c=bat
+
 function mvp(){ # create parent directories before move
   dir=$(dirname -- "${@: -1}".); dir=${dir%.} # fix dirname not respecting trailing slashes by appending a . and removing it after!
   if [ ! -z "$dir" ]; then # for . and options like --help, $dir is empty and mkdir would complain
@@ -60,6 +61,7 @@ alias le='eza --long --icons --git --group-directories-first'
 alias lh='cwdsh "ls -d .*"' # only ls hidden files
 alias lah='cwdsh "ls -lhd .*"' # as above but long
 alias uniqc='sort | uniq -c | sort'
+
 alias topm='\top -o %MEM'
 function psmem(){ # e.g. psmem chrome
     \top -bn 1 | grep $1 | cut -c32-36 - | awk '{s+=$1} END {print s}'
