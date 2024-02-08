@@ -61,6 +61,7 @@ alias le='eza --long --icons --git --group-directories-first'
 alias lh='cwdsh "ls -d .*"' # only ls hidden files
 alias lah='cwdsh "ls -lhd .*"' # as above but long
 alias uniqc='sort | uniq -c | sort'
+function rgd() { rg --json $@ | delta } # syntax-highlighted search results, https://dandavison.github.io/delta/grep.html
 
 alias topm='\top -o %MEM'
 function psmem(){ # e.g. psmem chrome
