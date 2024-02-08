@@ -41,7 +41,8 @@ fi
 
 # shell
 alias v=nvim
-alias c=pygmentize
+# alias c=pygmentize
+alias c=bat
 function mvp(){ # create parent directories before move
   dir=$(dirname -- "${@: -1}".); dir=${dir%.} # fix dirname not respecting trailing slashes by appending a . and removing it after!
   if [ ! -z "$dir" ]; then # for . and options like --help, $dir is empty and mkdir would complain
