@@ -21,3 +21,13 @@ if [[ "$OSTYPE" == darwin* ]]; then
 else
   export JAVA_HOME="/usr/lib/jvm/java-openjdk"
 fi
+
+# via https://dandavison.github.io/delta/tips-and-tricks/mouse-scrolling.html, had to add --mouse for scrolling
+# less options:
+  # -+S Wrap lines instead of the default chop-long-lines which breaks mouse select & copy in terminal (also, horizontal scrolling is annoying).
+  # -F Quit if entire file fits on first screen. Otherwise have to press q.
+  # -E Quit at end of file. E.g. when reaching it via G.
+  # -R Output "raw" control characters.
+  # -X Don't use init/deinit strings.
+export DELTA_PAGER='less -RFXE --mouse'
+export BAT_PAGER='less -RFX --mouse'
