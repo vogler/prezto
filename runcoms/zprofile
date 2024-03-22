@@ -51,6 +51,7 @@ typeset -gU cdpath fpath mailpath path
 # Set the list of directories that Zsh searches for programs.
 # (N) = NULL_GLOB = optional, no error
 path=(
+  $HOME/.cargo/bin(N)
   $HOME/{,s}bin(N)
   /opt/{local}/{,s}bin(N) # homebrew,local -> local since otherwise `brew shellenv` below does nothing, but is needed for setting HOMEBREW_PREFIX, MANPATH etc.
   /usr/local/{,s}bin(N)
