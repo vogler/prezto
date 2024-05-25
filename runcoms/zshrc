@@ -103,6 +103,7 @@ fi
 alias lg=lazygit
 alias gwD='git diff --no-ext-diff --word-diff=color' # prezto has mode plain (uses color and delimiters [-removed-] and {+added+}) as default
 alias giD='git diff --no-ext-diff --cached --word-diff=color'
+alias glr='git reflog --date=iso --pretty=medium' # show reflog with date of ref-change and of commit; same as `git log --walk-reflogs --date=iso` just with short commit hash
 function gfcd(){
   git clone $1 && cd $(basename $1 | sed 's/\.git//')
 }
