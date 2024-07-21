@@ -153,6 +153,14 @@ function autostash(){ git stash | grep 'Saved working directory' && $* && git st
 alias sgfr='autostash git svn rebase'
 alias sgc='git commit --verbose && git svn dcommit'
 
+# docker
+function docker-volumes () {
+  for volume in $(docker volume ls --format '{{.Name}}'); do
+    echo $volume
+    docker ps -a --filter volume="$volume"  --format '{{.Names}}' | sed 's/^/  /'
+  done
+}
+
 # C
 function gcc-run(){
   gcc $1 && ./a.out && rm -f a.out
