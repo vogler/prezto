@@ -41,7 +41,12 @@ fi
 
 # shell
 alias v=nvim
-alias vf='v $(fzf -m --preview="bat --color=always {}")'
+# alias vf='v $(fzf -m --preview="bat --color=always {}")' # opens v without args on ctrl-c
+# alias vf='fzf -m --preview="bat --color=always {}" | xargs -r nvim' # xargs can't use alias v
+function vf() {
+  results=$(fzf -m --preview="bat --color=always {}")
+  [ ! -z "$results" ] && v $(expr $results) # need to split string again via expr
+}
 # alias c=pygmentize
 alias c=bat
 
