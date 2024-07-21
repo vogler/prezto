@@ -36,6 +36,8 @@ if [[ -z "$LANG" ]]; then
   export LC_CTYPE='en_US.UTF-8'
 fi
 
+# export LC_ALL=en_US.UTF-8 # otherwise perl complains in vscode's terminal
+
 #
 # Paths
 #
@@ -87,7 +89,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
       $HOMEBREW_PREFIX/opt/{coreutils,findutils,grep,gnu-sed}/libexec/gnubin(N)
       $path
     )
-    # manpath executable is used to generate path from PATH (but only if MANPATH is not set) 
+    # manpath executable is used to generate path from PATH (but only if MANPATH is not set)
     # export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
   fi
 elif [[ "$OSTYPE" == linux* ]]; then
@@ -96,6 +98,6 @@ elif [[ "$OSTYPE" == linux* ]]; then
     $path
   )
 fi
+
 # ~/dotfiles/bin mapped to ~/.local/bin instead of just ~/bin since ~/.local is already used by nvim, delta, gh, heroku
 export PATH=$PATH:$HOME/.local/bin
-# export LC_ALL=en_US.UTF-8 # otherwise perl complains in vscode's terminal
