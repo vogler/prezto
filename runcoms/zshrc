@@ -41,6 +41,7 @@ fi
 
 # shell
 alias v=nvim
+alias vf='v $(fzf -m --preview="bat --color=always {}")'
 # alias c=pygmentize
 alias c=bat
 
