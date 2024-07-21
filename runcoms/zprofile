@@ -101,3 +101,7 @@ fi
 
 # ~/dotfiles/bin mapped to ~/.local/bin instead of just ~/bin since ~/.local is already used by nvim, delta, gh, heroku
 export PATH=$PATH:$HOME/.local/bin
+
+# node version manager via https://github.com/nvm-sh/nvm#install--update-script
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm and node installed with it
