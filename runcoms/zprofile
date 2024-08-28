@@ -105,3 +105,7 @@ export PATH=$HOME/.local/bin:$PATH
 # node version manager via https://github.com/nvm-sh/nvm#install--update-script
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm and node installed with it
+
+# Added by OrbStack: command-line tools and integration
+# Comment this line if you don't want it to be added again.
+source ~/.orbstack/shell/init.zsh 2>/dev/null || :
