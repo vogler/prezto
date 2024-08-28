@@ -116,7 +116,7 @@ function gfcd(){
 }
 alias gwc='git clean -d -n' # list
 alias gwC='git clean -d -f' # remove
-function gac(){ gia $1; gc $1 }
+function gac(){ gia ${1-"."}; gc ${1-"."} }
 function gcA(){ gia .; gc }
 alias gbxr='git push origin --delete' # delete remote branch
 alias gbv='git branch -vv' # instead of just -v: also show remote-tracking branches
