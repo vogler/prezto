@@ -286,7 +286,7 @@ whats() {
     if [[ "$c" == "$cmd is an alias for"* ]]; then continue; fi
     if [[ "$c" == "$cmd is a shell builtin" ]]; then continue; fi
     if [[ "$c" == "$cmd is a shell function"* ]]; then
-      declare -f "$cmd" | bat -l bash --style plain
+      declare -f "$cmd" | bat -l zsh style plain
       continue
     fi
     # Otherwise it should be a command (script or binary)
