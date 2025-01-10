@@ -40,7 +40,7 @@ if [[ -e $commands[apt] ]]; then
 fi
 
 # shell
-alias v=nvim
+alias v='NVIM_APPNAME=nvim-astro nvim' # 2024-08-28 18:53
 # alias vf='v $(fzf -m --preview="bat --color=always {}")' # opens v without args on ctrl-c
 # alias vf='fzf -m --preview="bat --color=always {}" | xargs -r nvim' # xargs can't use alias v
 function vf() {
@@ -74,7 +74,8 @@ function psmem(){ # e.g. psmem chrome
     \top -bn 1 | grep $1 | cut -c32-36 - | awk '{s+=$1} END {print s}'
 }
 compdef _pids vmrss # pid completion for ~/dotfiles/bin/vmrss
-# https://unix.stackexchange.com/a/81699/37512
+
+# get external IP https://unix.stackexchange.com/a/81699/37512
 alias wanip='dig @resolver4.opendns.com myip.opendns.com +short'
 alias wanip4='dig @resolver4.opendns.com myip.opendns.com +short -4'
 alias wanip6='dig @resolver1.ipv6-sandbox.opendns.com AAAA myip.opendns.com +short -6'
@@ -260,3 +261,55 @@ fi
 
 # node version manager via https://github.com/nvm-sh/nvm#install--update-script - nvm.sh already loaded in zprofile
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Longer functions
+# Cursor: create a bash function that takes a command as an argument and prints its definition (alias, function, script, or binary)
+# $ type ls
+#   ls is an alias for ls --group-directories-first --color=auto
+#   ls is /opt/homebrew/opt/coreutils/libexec/gnubin/ls
+#   ls is /bin/ls
+# $ type archive
+#   archive is a shell function from /Users/voglerr/.zshrc
+whats() {
+  local cmd="$1"
+
+  # Check if it's an alias
+  if [[ "$cmd" != \* ]] && alias "$cmd" >/dev/null 2>&1; then # TODO \man should not be the alias, but the executable
+    echo "'$cmd' is an alias:"
+    alias "$cmd"
+    return
+  fi
+
+  # Check if it's a function
+  if declare -f "$cmd" >/dev/null 2>&1; then
+    echo "'$cmd' is a function:"
+    declare -f "$cmd"
+    return
+  fi
+
+  # Check if it's a builtin
+  if builtin type "$cmd" | grep -q "builtin"; then # had to remove -t
+    echo "'$cmd' is a shell builtin"
+    return
+  fi
+
+  # Check if it's an executable and get its path
+  if command -v "$cmd" >/dev/null 2>&1; then # TODO `command -v man` only outputs the alias, and not the executable /usr/bin/man which `type man` lists after the alias
+    # TODO for c in $(type "$cmd" | grep -v alias); do echo $c | cut -d" " -f3; done
+    local cmd_path=$(command -v "$cmd")
+    echo "'$cmd' is located at: $cmd_path"
+
+    # Check if it's a script by looking at first line
+    if head -n 1 "$cmd_path" 2>/dev/null | grep -q "^#!.*sh"; then
+      echo "It appears to be a shell script:"
+      cat "$cmd_path"
+    else
+      echo "It appears to be a binary executable"
+      file "$cmd_path"
+    fi
+    return
+  fi
+
+  echo "'$cmd' not found"
+  return 1
+}
