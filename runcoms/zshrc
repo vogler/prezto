@@ -298,7 +298,7 @@ function whats() {
       # $cmd=git == $pkg (formula): git is /opt/homebrew/bin/git -> /opt/homebrew/Cellar/git/2.48.1/bin/git
       # $cmd=code != $pkg=visual-studio-code (cask): code is /opt/homebrew/bin/code -> /Applications/Visual Studio Code.app/Contents/Resources/app/bin/code
         # /opt/homebrew/Caskroom/visual-studio-code/1.58.2/Visual Studio Code.app -> /Applications/Visual Studio Code.app
-      
+
       # resolve symlinks
       while [[ -L "$cmd_path" ]]; do
         link=$(readlink -f "$cmd_path")
@@ -352,12 +352,12 @@ function brew() {
     # echo "installed pkgs: ${@:2}"
     for pkg in ${@:2}; do
       # desc=$(brew info $pkg --json | jq '.[0].desc' -r) # default v1 json only works for formula
-      desc=$(command brew info $pkg --json=v2 | jq '.formulae[0].desc // .casks[0].desc' -r) 
+      desc=$(command brew info $pkg --json=v2 | jq '.formulae[0].desc // .casks[0].desc' -r)
       # brew --prefix git = /opt/homebrew/opt/git - not helpful since it's just symlink...
       if [ -e /opt/homebrew/Cellar/$pkg ]; then # formula
         pkg_path=/opt/homebrew/Cellar/$pkg
       else # cask
-        pkg_path=$(command brew info $pkg --json=v2 | jq '.casks[0].artifacts[] | select(.app).app[0]' -r)
+        pkg_path=/Applications/$(command brew info $pkg --json=v2 | jq '.casks[0].artifacts[] | select(.app).app[0]' -r)
       fi
       # dus=du -kh -h -d1 $1 | sort -h
       size=$(du -sh $pkg_path | cut -f1)
