@@ -274,7 +274,7 @@ fi
 #   type is an alias for type -a
 #   type is a shell builtin
 #   type is /usr/bin/type
-whats() {
+function whats() {
   local cmd="$1"
   type "$cmd" # already prints alias definitions, but no definitions for functions
   if [ $? != 0 ]; then return; fi # $cmd not found
@@ -285,8 +285,8 @@ whats() {
     # echo "Check $c"
     if [[ "$c" == "$cmd is an alias for"* ]]; then continue; fi
     if [[ "$c" == "$cmd is a shell builtin" ]]; then continue; fi
-    if [[ "$c" == "$cmd is a shell function"* ]]; then
-      declare -f "$cmd" | bat -l zsh style plain
+    if [[ "$c" == "$cmd is a shell function"* ]] || [[ "$c" == "$cmd is an autoload shell function" ]]; then
+      declare -f "$cmd" | bat -l zsh --style plain
       continue
     fi
     # Otherwise it should be a command (script or binary)
