@@ -291,6 +291,40 @@ function whats() {
     fi
     # Otherwise it should be a command (script or binary)
     local cmd_path=$(echo "$c" | cut -d" " -f3);
+
+    # `brew info $pkg` if command comes from a Homebrew formula/cask
+    if [[ "$OSTYPE" == darwin* ]] && [[ "$cmd_path" == /opt/homebrew* ]]; then
+      # examples:
+      # $cmd=git == $pkg (formula): git is /opt/homebrew/bin/git -> /opt/homebrew/Cellar/git/2.48.1/bin/git
+      # $cmd=code != $pkg=visual-studio-code (cask): code is /opt/homebrew/bin/code -> /Applications/Visual Studio Code.app/Contents/Resources/app/bin/code
+        # /opt/homebrew/Caskroom/visual-studio-code/1.58.2/Visual Studio Code.app -> /Applications/Visual Studio Code.app
+      
+      # resolve symlinks
+      while [[ -L "$cmd_path" ]]; do
+        link=$(readlink -f "$cmd_path")
+        echo "$cmd_path -> $link"
+        cmd_path="$link"
+      done
+      echo
+      if [[ "$cmd_path" == /opt/homebrew/Cellar/* ]]; then
+        local pkg=$(echo "$cmd_path" | sed -E 's|/opt/homebrew/Cellar/([^/]+)/.*|\1|')
+        echo "$cmd_path is a formula ($pkg):";
+        brew info --formula $pkg # also has --json
+      elif [[ "$cmd_path" == /Applications/* ]]; then
+        local pkg=$(echo "$cmd_path" | sed -E 's|/Applications/([^/]+)/.*|\1|')
+        # echo "$cmd_path is an app ($pkg)";
+        # Find matching cask directory that links to app
+        local cask_path=$(find /opt/homebrew/Caskroom -maxdepth 3 -type l -name "$pkg" | head -n 1)
+        cmd_path="$cask_path"
+        echo "$pkg belongs to cask $cask_path"
+      fi
+      if [[ "$cmd_path" == /opt/homebrew/Caskroom/* ]]; then
+        local pkg=$(echo "$cmd_path" | sed -E 's|/opt/homebrew/Caskroom/([^/]+)/.*|\1|')
+        echo "$cmd_path is a cask ($pkg):";
+        brew info --cask $pkg
+      fi
+    fi
+    echo
     # Check if it's a script by looking at first line
     if head -n 1 "$cmd_path" 2>/dev/null | grep -q "^#!.*sh"; then
       bat "$cmd_path"
