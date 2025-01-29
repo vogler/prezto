@@ -333,3 +333,38 @@ function whats() {
     fi
   done
 }
+
+# logs changes made by brew, e.g. size, description and datetime for `brew install` to ~/brew.log
+# can't alias 'brew install'=..., and function brew-install() {} would miss `brew install`, so we overwrite `brew`
+# all commands are logged with atuin anyway, but we still log all brew commands commented out to have some context
+# get `brew install` commands from atuin's history:
+# sqlite3 ~/.local/share/atuin/history.db 'select command from history where command like "brew install%" order by timestamp desc limit 10'
+function brew() {
+  # log every `brew` command commented out with datetime
+  echo "# brew $@ # ($(date -Iseconds))" >>! ~/brew.log
+
+  # pass arguments to brew (`command` avoids recursive function call) to execute command
+  command brew $@
+
+  # log `brew install` commands with size (not in info, only known after the above), description and datetime
+  # TODO this only works for `brew install foo` without any other options
+  if [[ "$1" == "install" ]]; then
+    # echo "installed pkgs: ${@:2}"
+    for pkg in ${@:2}; do
+      # desc=$(brew info $pkg --json | jq '.[0].desc' -r) # default v1 json only works for formula
+      desc=$(command brew info $pkg --json=v2 | jq '.formulae[0].desc // .casks[0].desc' -r) 
+      # brew --prefix git = /opt/homebrew/opt/git - not helpful since it's just symlink...
+      if [ -e /opt/homebrew/Cellar/$pkg ]; then # formula
+        pkg_path=/opt/homebrew/Cellar/$pkg
+      else # cask
+        pkg_path=$(command brew info $pkg --json=v2 | jq '.casks[0].artifacts[] | select(.app).app[0]' -r)
+      fi
+      # dus=du -kh -h -d1 $1 | sort -h
+      size=$(du -sh $pkg_path | cut -f1)
+      # diskus $pkg_path # this is somehow a bit more than what du reports; both should be disk usage (instead of --apparent-size) and decimal (MB) instead of binary (MiB)
+      echo
+      echo "Added to ~/brew.log:"
+      echo "brew install $pkg # $size, $desc ($(date -Iseconds))" | tee -a ~/brew.log
+    done
+  fi
+}
