@@ -82,6 +82,8 @@ alias wanip6='dig @resolver1.ipv6-sandbox.opendns.com AAAA myip.opendns.com +sho
 # alias newip='[[ -z $FRITZ_PASSWORD ]] && echo "Enter FritzBox password:" && read -s FRITZ_PASSWORD; wanip6 && fritzconnection --reconnect' # password was just needed for fritzhosts, but is also not checked, so `FRITZ_PASSWORD=foo fritzhosts` also works
 alias newip='wanip6 && fritzconnection --reconnect; until ping -c1 google.de >/dev/null 2>&1; do sleep 1; done; wanip6' # pip install fritzconnection
 alias ts="ts '%Y-%m-%d %H:%M:%S'" # prepends date & time as e.g. '2023-04-20 14:47:56' instead of the default 'Apr 20 14:47:56', example: `mosquitto_sub -h rpi3 -t 'sensors/mh-z19b' | ts`
+# mqtt subscribe (default host rpi3) with timestamps, highlighting via tspin, spacer adds separation line with duration if >=1s no output
+function msub() { mosquitto_sub -h ${2-"rpi3"} -t "$1" -v | ts | tspin | spacer }
 # if brew command command-not-found-init > /dev/null 2>&1; then eval "$(brew command-not-found-init)"; fi # this takes >1s! do not use!
 # mv $1 to $2 (e.g. /etc/foo to $2/etc/foo), ln -s and git add it
 # function gln(){ TODO }
