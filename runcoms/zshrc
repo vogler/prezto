@@ -197,6 +197,9 @@ function ocr(){
 # Python
 alias ipython='ipython --no-confirm-exit' # don't want to commit .ipython/ and its prompt is annoying
 
+# JS
+alias npx='npx -yes' # don't want 'Ok to proceed? (y)' prompt
+
 function archive(){ # save file(s) as (encrypted) archive to dropbox
     dst=~/Dropbox/$1.7z
     rm -f $dst
