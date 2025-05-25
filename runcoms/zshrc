@@ -67,7 +67,11 @@ alias le='eza --long --icons --git --group-directories-first'
 alias lh='cwdsh "ls -d .*"' # only ls hidden files
 alias lah='cwdsh "ls -lhd .*"' # as above but long
 alias uniqc='sort | uniq -c | sort'
-function rgd() { rg --json $@ | delta } # syntax-highlighted search results, https://dandavison.github.io/delta/grep.html
+# rg does not have fixed place for config file, don't want to set RIPGREP_CONFIG_PATH - https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
+# rg is also used for word search in AstroNvim/Telescope, however, this does not use the alias, so will either need config file after all or configure it for nvim sep.
+# rg ignores hidden files (e.g. everything in .github/) by default, it still respects .gitignore, but with --hidden will search .git itself (since not gitignored...), so we need to exclude it:
+alias rg="rg --hidden --glob='!.git/*'"
+function rgg() { rg --json $@ | delta } # syntax-highlighted search results, https://dandavison.github.io/delta/grep.html
 
 alias topm='\top -o %MEM'
 function psmem(){ # e.g. psmem chrome
