@@ -87,6 +87,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
     # use GNU tools instead, see https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/
     path=(
       $HOMEBREW_PREFIX/opt/{coreutils,findutils,grep,gnu-sed}/libexec/gnubin(N)
+      ~/.pub-cache/bin # Dart packages: https://dart.dev/tools/pub/cmd/pub-global#running-a-script-from-your-path
       $path
     )
     # manpath executable is used to generate path from PATH (but only if MANPATH is not set)
