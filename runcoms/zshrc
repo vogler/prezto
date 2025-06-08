@@ -24,6 +24,10 @@ bindkey '^ ' autosuggest-execute
 bindkey '^X^I' glob-alias # '^ ' was glob-alias, which is useful to completely expand aliases and variables
 bindkey '^X^T' autosuggest-toggle
 
+# there's no simple way to rename an existing alias... wanted to redefine exisiting gdu as gdU and then unalias gdu for gdu-go
+function alias_rhs() { alias $1 | sed -E "s/^$1='(.*)'$/\\1/" }
+function alias_re() { alias $1="$(alias_rhs $2)"; unalias $2; }
+
 # macOS
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -114,6 +118,10 @@ if [[ -e $commands[hub] ]]; then
   alias git=hub # https://github.com/cli/cli/blob/trunk/docs/gh-vs-hub.md
 fi
 alias lg=lazygit
+# alias gdU='git ls-files --other --exclude-standard'
+# alias gdU="$(alias_rhs gdu)"
+# unalias gdu # better ncdu (disk usage); ~/.local/bin/gdu -> /opt/homebrew/bin/gdu-go
+alias_re gdU gdu
 alias gwd="git diff --no-ext-diff -- ':!/**package-lock.json' ':!**yarn.lock' ':!**pnpm-lock.yaml'" # git diff: don't show changes in lock files
 alias gwD='git diff --no-ext-diff --word-diff=color' # prezto has mode plain (uses color and delimiters [-removed-] and {+added+}) as default
 alias giD='git diff --no-ext-diff --cached --word-diff=color'
