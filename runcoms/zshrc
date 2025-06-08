@@ -54,6 +54,10 @@ function vf() {
 # alias c=pygmentize
 alias c=bat
 
+# suffix aliases to be able to 'open' files in terminal without prepeding a command to view them
+alias -s {yaml,yml,json,jsonc,toml,env,html,css}=bat
+alias -s md='glow -p'
+
 function mvp(){ # create parent directories before move
   dir=$(dirname -- "${@: -1}".); dir=${dir%.} # fix dirname not respecting trailing slashes by appending a . and removing it after!
   if [ ! -z "$dir" ]; then # for . and options like --help, $dir is empty and mkdir would complain
