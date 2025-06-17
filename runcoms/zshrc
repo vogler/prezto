@@ -45,14 +45,53 @@ fi
 
 # shell
 alias v='NVIM_APPNAME=nvim-astro nvim' # 2024-08-28 18:53
+alias c=bat # ~/.config/bat/config
+
+# fzf
+# find with fzf and open in nvim; same commands as in AstroNvim
 # alias vf='v $(fzf -m --preview="bat --color=always {}")' # opens v without args on ctrl-c
 # alias vf='fzf -m --preview="bat --color=always {}" | xargs -r nvim' # xargs can't use alias v
-function vf() {
-  results=$(fzf -m --preview="bat --color=always {}")
+# fzf -m = allow multi-select with tab/shift-tab, otherwise tab does nothing
+# https://github.com/junegunn/fzf#preview-window
+# https://github.com/junegunn/fzf/blob/master/ADVANCED.md
+export FZF_DEFAULT_OPTS='--height=80% --layout=reverse --info=inline'
+
+function ff() {
+  # could also add $@ after fzf to allow to extend its args, but here we use optional args as an initial query
+  INITIAL_QUERY="${*:-}"
+  # by default fzf uses `find` which includes gitignored files, the below modes with ctrl-t use `fd` which ignores these
+  results=$(fzf -m --query "$INITIAL_QUERY" \
+    --preview-window '60%' --bind 'ctrl-/:change-preview-window(50%|hidden|)' \
+    --prompt 'Files> ' \
+    --header 'CTRL-T: Switch Files/Directories' \
+    --bind 'ctrl-t:transform:[[ ! $FZF_PROMPT =~ Files ]] &&
+            echo "change-prompt(Files> )+reload(fd --type file)" ||
+            echo "change-prompt(Directories> )+reload(fd --type directory)"' \
+    --preview '[[ $FZF_PROMPT =~ Files ]] && bat --style=full,-grid --color=always {} || tree -C {}'
+  )
   [ ! -z "$results" ] && v $(expr $results) # need to split string again via expr
 }
-# alias c=pygmentize
-alias c=bat
+
+function fw() {
+  # https://github.com/junegunn/fzf/blob/master/ADVANCED.md#ripgrep-integration
+  # Two-phase filtering with Ripgrep and fzf
+  # 1. Search for text in files using Ripgrep
+  # 2. Interactively restart Ripgrep with reload action
+  #    * Press alt-enter to switch to fzf-only filtering
+  # 3. Open the file in Vim
+  RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
+  INITIAL_QUERY="${*:-}"
+  fzf --ansi --disabled --query "$INITIAL_QUERY" \
+      --bind "start:reload:$RG_PREFIX {q}" \
+      --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+      --bind "alt-enter:unbind(change,alt-enter)+change-prompt(2. fzf> )+enable-search+clear-query" \
+      --color "hl:-1:underline,hl+:-1:underline:reverse" \
+      --prompt '1. ripgrep> ' \
+      --delimiter : \
+      --preview 'bat --style=full,-grid --color=always {1} --highlight-line {2}' \
+      --preview-window 'up,70%,border-bottom,+{2}+3/3,~3' \
+      --bind 'enter:become(nvim {1} +{2})'
+}
 
 # suffix aliases to be able to 'open' files in terminal without prepeding a command to view them
 alias -s {yaml,yml,json,jsonc,toml,env,html,css}=bat
