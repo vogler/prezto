@@ -90,7 +90,7 @@ function fw() {
       --delimiter : \
       --preview 'bat --style=full,-grid --color=always {1} --highlight-line {2}' \
       --preview-window 'up,70%,border-bottom,+{2}+3/3,~3' \
-      --bind 'enter:become(nvim {1} +{2})'
+      --bind 'enter:become(NVIM_APPNAME=nvim-astro nvim {1} +{2})'
 }
 
 # suffix aliases to be able to 'open' files in terminal without prepeding a command to view them
