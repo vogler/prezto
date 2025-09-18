@@ -69,7 +69,7 @@ function ff() {
             echo "change-prompt(Directories> )+reload(fd --type directory)"' \
     --preview '[[ $FZF_PROMPT =~ Files ]] && bat --style=full,-grid --color=always {} || tree -C {}'
   )
-  [ ! -z "$results" ] && v $(expr $results) # need to split string again via expr
+  [ ! -z "$results" ] && echo $results && v $(expr $results) # need to split string again via expr
 }
 
 function fw() {
