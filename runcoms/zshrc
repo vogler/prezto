@@ -210,6 +210,8 @@ function git-repos(){
 alias gh-repos='gh repo list vogler -L999'
 # list PR that introduced current commit in browser
 alias gh-pr='gh pr list --state all --search $(git rev-parse HEAD) -w'
+# create repo on github from current directory
+alias gh-create='gh repo create $(basename `pwd`) --private --source=. --add-readme --push'
 
 # git svn
 # git svn doesn't know autostash...
