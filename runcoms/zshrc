@@ -23,6 +23,24 @@ fi
 bindkey '^ ' autosuggest-execute
 bindkey '^X^I' glob-alias # '^ ' was glob-alias, which is useful to completely expand aliases and variables
 bindkey '^X^T' autosuggest-toggle
+# zsh vi mode + Emacs/readline-style key bindings - after changing key-bindings in zpreztorc to vi (bindkey -v) from default emacs (bindkey -e), re-add some missing readline bindings for insert mode (-M viins) and normal/command mode (-M vicmd):
+function bindkey-vi() {
+  # without -M, it only binds insert mode, but we want both
+  bindkey -M viins $*
+  bindkey -M vicmd $*
+}
+bindkey-vi "^P" history-substring-search-up
+bindkey-vi "^N" history-substring-search-down
+bindkey-vi '^A' beginning-of-line      # Ctrl+A
+bindkey-vi '^E' end-of-line            # Ctrl+E
+bindkey-vi '^K' kill-line              # Ctrl+K
+bindkey-vi '^U' backward-kill-line     # Ctrl+U
+bindkey-vi '^W' backward-kill-word     # Ctrl+W
+bindkey-vi '^[b' backward-word         # Alt/Meta-b
+bindkey-vi '^[f' forward-word          # Alt/Meta-f
+bindkey-vi '^[d' kill-word             # Alt/Meta-d
+bindkey-vi '^Y' yank                   # Ctrl+Y
+# bindkey -M emacs -L   # list all emacs keybindings
 
 # there's no simple way to rename an existing alias... wanted to redefine exisiting gdu as gdU and then unalias gdu for gdu-go
 function alias_rhs() { alias $1 | sed -E "s/^$1='(.*)'$/\\1/" }
