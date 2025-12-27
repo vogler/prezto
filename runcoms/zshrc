@@ -238,6 +238,7 @@ alias sgfr='autostash git svn rebase'
 alias sgc='git commit --verbose && git svn dcommit'
 
 # docker
+alias ld=lazydocker # use \ld to link object files (not really needed since done by gcc/clang)
 function docker-volumes () {
   for volume in $(docker volume ls --format '{{.Name}}'); do
     echo $volume
