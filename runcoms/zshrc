@@ -449,3 +449,6 @@ function brew() {
     done
   fi
 }
+
+# Added by Antigravity
+export PATH="/Users/voglerr/.antigravity/antigravity/bin:$PATH"
