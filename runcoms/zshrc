@@ -147,6 +147,30 @@ function psmem(){ # e.g. psmem chrome
 }
 compdef _pids vmrss # pid completion for ~/dotfiles/bin/vmrss
 
+# 1. Copy File Contents
+# A standard alias works here because standard input redirection allows appending the filename.
+alias copy-content='pbcopy <'
+
+# 2. Copy File Object to paste in Finder, Slack, etc.
+# Requires a function to securely interpolate the resolved path into the osascript argument.
+copy-file() {
+  if [[ -z "$1" || ! -e "$1" ]]; then
+    echo "Error: File not found or not specified." >&2
+    return 1
+  fi
+  osascript -e "set the clipboard to POSIX file \"$(realpath "$1")\""
+}
+
+# 3. Copy File Path
+# Requires a function to resolve the path before piping to tr and pbcopy.
+copy-path() {
+  if [[ -z "$1" || ! -e "$1" ]]; then
+    echo "Error: File not found or not specified." >&2
+    return 1
+  fi
+  realpath "$1" | tr -d '\n' | pbcopy
+}
+
 # get external IP https://unix.stackexchange.com/a/81699/37512
 alias wanip='dig @resolver4.opendns.com myip.opendns.com +short'
 alias wanip4='dig @resolver4.opendns.com myip.opendns.com +short -4'
