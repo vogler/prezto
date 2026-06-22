@@ -488,5 +488,32 @@ function mkg() {
   mkdir -p "$1" && cd "$1" && git init && opencode .
 }
 
+# Function to list, search and resume opencode sessions globally
+function opencode-sessions() {
+  local db_path="$HOME/.local/share/opencode/opencode.db"
+  if [[ ! -f "$db_path" ]]; then
+    echo "Opencode database not found at $db_path"
+    return 1
+  fi
+
+  # Query DB for sessions and format the output.
+  # Columns: ID | Directory | Date | Title | Directory
+  # fzf hides the first two columns (ID and Directory) but uses them for logic.
+  local selected=$(sqlite3 "$db_path" "SELECT id || '|' || directory || '|' || datetime(time_updated/1000, 'unixepoch', 'localtime') || '|' || title || '|' || directory FROM session ORDER BY time_updated DESC;" | awk -F'|' '{ printf "%s|%s|%-20s | %-60s | %s\n", $1, $2, $3, $4, $5 }' | fzf --delimiter="\|" --with-nth=3,4,5)
+
+  if [[ -n "$selected" ]]; then
+    local session_id=$(echo "$selected" | cut -d'|' -f1)
+    local session_dir=$(echo "$selected" | cut -d'|' -f2)
+    
+    if [[ -d "$session_dir" ]]; then
+      echo "Changing directory to: $session_dir"
+      cd "$session_dir" || return 1
+      opencode -s "$session_id"
+    else
+      echo "Directory $session_dir does not exist."
+    fi
+  fi
+}
+
 # Added by Antigravity
 export PATH="/Users/voglerr/.antigravity/antigravity/bin:$PATH"
