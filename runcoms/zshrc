@@ -27,7 +27,7 @@ bindkey '^ ' autosuggest-execute
 bindkey '^X^I' glob-alias # '^ ' was glob-alias, which is useful to completely expand aliases and variables
 bindkey '^X^T' autosuggest-toggle
 # zsh vi mode + Emacs/readline-style key bindings - after changing key-bindings in zpreztorc to vi (bindkey -v) from default emacs (bindkey -e), re-add some missing readline bindings for insert mode (-M viins) and normal/command mode (-M vicmd):
-function bindkey-vi() {
+function bindkey-vi {
   # without -M, it only binds insert mode, but we want both
   bindkey -M viins $*
   bindkey -M vicmd $*
@@ -46,8 +46,8 @@ bindkey-vi '^Y' yank                   # Ctrl+Y
 # bindkey -M emacs -L   # list all emacs keybindings
 
 # there's no simple way to rename an existing alias... wanted to redefine exisiting gdu as gdU and then unalias gdu for gdu-go
-function alias_rhs() { alias $1 | sed -E "s/^$1='(.*)'$/\\1/" }
-function alias_re() { alias $1="$(alias_rhs $2)"; unalias $2; }
+function alias_rhs { alias $1 | sed -E "s/^$1='(.*)'$/\\1/"; }
+function alias_re { alias $1="$(alias_rhs $2)"; unalias $2; }
 
 # macOS
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
@@ -77,7 +77,7 @@ alias c=bat # ~/.config/bat/config
 # https://github.com/junegunn/fzf/blob/master/ADVANCED.md
 export FZF_DEFAULT_OPTS='--height=80% --layout=reverse --info=inline'
 
-function ff() {
+function ff {
   # could also add $@ after fzf to allow to extend its args, but here we use optional args as an initial query
   INITIAL_QUERY="${*:-}"
   # by default fzf uses `find` which includes gitignored files, the below modes with ctrl-t use `fd` which ignores these
@@ -93,7 +93,7 @@ function ff() {
   [ ! -z "$results" ] && echo $results && v $(expr $results) # need to split string again via expr
 }
 
-function fw() {
+function fw {
   # https://github.com/junegunn/fzf/blob/master/ADVANCED.md#ripgrep-integration
   # Two-phase filtering with Ripgrep and fzf
   # 1. Search for text in files using Ripgrep
@@ -118,17 +118,17 @@ function fw() {
 alias -s {yaml,yml,json,jsonc,toml,env,html,css}=bat
 alias -s md='glow -p'
 
-function mvp(){ # create parent directories before move
+function mvp { # create parent directories before move
   dir=$(dirname -- "${@: -1}".); dir=${dir%.} # fix dirname not respecting trailing slashes by appending a . and removing it after!
   if [ ! -z "$dir" ]; then # for . and options like --help, $dir is empty and mkdir would complain
     mkdir --parents --verbose -- "$dir"
   fi
   command mv $@
 }
-function dus() { du -h -d1 $1 | sort -h }
-function mkcd(){ mkdir -p $1; cd $1 }
-function rmcwd(){ x=`pwd`; if [ $x = `cd; pwd` ]; then echo "in home!"; else cd ..; rm -rf $x; fi }
-function cwdsh(){ if [[ -z $2 ]]; then eval $1; else pu $2; eval $1; po; fi }
+function dus { du -h -d1 $1 | sort -h; }
+function mkcd { mkdir -p $1; cd $1; }
+function rmcwd { x=`pwd`; if [ $x = `cd; pwd` ]; then echo "in home!"; else cd ..; rm -rf $x; fi }
+function cwdsh { if [[ -z $2 ]]; then eval $1; else pu $2; eval $1; po; fi }
 # prezto's ll is just 'ls -lh'
 # alias le='eza --long --header --icons --git --group-directories-first'
 alias le='eza --long --icons --git --group-directories-first'
@@ -139,10 +139,10 @@ alias uniqc='sort | uniq -c | sort'
 # rg is also used for word search in AstroNvim/Telescope, however, this does not use the alias, so will either need config file after all or configure it for nvim sep.
 # rg ignores hidden files (e.g. everything in .github/) by default, it still respects .gitignore, but with --hidden will search .git itself (since not gitignored...), so we need to exclude it:
 alias rg="rg --hidden --glob='!.git/*'"
-function rgg() { rg --json $@ | delta } # syntax-highlighted search results, https://dandavison.github.io/delta/grep.html
+function rgg { rg --json $@ | delta; } # syntax-highlighted search results, https://dandavison.github.io/delta/grep.html
 
 alias topm='\top -o %MEM'
-function psmem(){ # e.g. psmem chrome
+function psmem { # e.g. psmem chrome
     \top -bn 1 | grep $1 | cut -c32-36 - | awk '{s+=$1} END {print s}'
 }
 compdef _pids vmrss # pid completion for ~/dotfiles/bin/vmrss
@@ -153,7 +153,7 @@ alias copy-content='pbcopy <'
 
 # 2. Copy File Object to paste in Finder, Slack, etc.
 # Requires a function to securely interpolate the resolved path into the osascript argument.
-copy-file() {
+function copy-file {
   if [[ -z "$1" || ! -e "$1" ]]; then
     echo "Error: File not found or not specified." >&2
     return 1
@@ -163,7 +163,7 @@ copy-file() {
 
 # 3. Copy File Path
 # Requires a function to resolve the path before piping to tr and pbcopy.
-copy-path() {
+function copy-path {
   if [[ -z "$1" || ! -e "$1" ]]; then
     echo "Error: File not found or not specified." >&2
     return 1
@@ -179,12 +179,12 @@ alias wanip6='dig @resolver1.ipv6-sandbox.opendns.com AAAA myip.opendns.com +sho
 alias newip='wanip6 && fritzconnection --reconnect; until ping -c1 google.de >/dev/null 2>&1; do sleep 1; done; wanip6' # pip install fritzconnection
 alias ts="ts '%Y-%m-%d %H:%M:%S'" # prepends date & time as e.g. '2023-04-20 14:47:56' instead of the default 'Apr 20 14:47:56', example: `mosquitto_sub -h rpi3 -t 'sensors/mh-z19b' | ts`
 # mqtt subscribe (default host rpi3) with timestamps, highlighting via tspin, spacer adds separation line with duration if >=1s no output
-function msub() { mosquitto_sub -h ${2-"rpi3"} -t ${1-"#"} -v | ts | tspin | spacer }
+function msub { mosquitto_sub -h ${2-"rpi3"} -t ${1-"#"} -v | ts | tspin | spacer; }
 # if brew command command-not-found-init > /dev/null 2>&1; then eval "$(brew command-not-found-init)"; fi # this takes >1s! do not use!
 # mv $1 to $2 (e.g. /etc/foo to $2/etc/foo), ln -s and git add it
 # function gln(){ TODO }
-function http-status(){ curl -sI $1 | head -n1 | cut -d' ' -f2 }
-function curl-ua() { curl -s $1 -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36' --compressed }
+function http-status { curl -sI $1 | head -n1 | cut -d' ' -f2; }
+function curl-ua { curl -s $1 -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36' --compressed; }
 alias co2w='watch "mosquitto_sub -h rpi3 -t sensors/mh-z19b -C 1 | jq .co2 | figlet -f doh"'
 
 # convert all timestamps (10 digits) in a file or stdin to human-readable date and time
@@ -214,17 +214,17 @@ alias gwd="git diff --no-ext-diff -- ':!/**package-lock.json' ':!**yarn.lock' ':
 alias gwD='git diff --no-ext-diff --word-diff=color' # prezto has mode plain (uses color and delimiters [-removed-] and {+added+}) as default
 alias giD='git diff --no-ext-diff --cached --word-diff=color'
 alias glr='git reflog --date=iso --pretty=medium' # show reflog with date of ref-change and of commit; same as `git log --walk-reflogs --date=iso` just with short commit hash
-function gfcd(){
+function gfcd {
   git clone $1 && cd $(basename $1 | sed 's/\.git//')
 }
 alias gwc='git clean -d -n' # list
 alias gwC='git clean -d -f' # remove
-function gac(){ gia ${1-"."}; gc ${1-"."} }
-function gcA(){ gia .; gc }
+function gac(){ gia ${1-"."}; gc ${1-"."}; }
+function gcA(){ gia .; gc; }
 alias gbxr='git push origin --delete' # delete remote branch
 alias gbv='git branch -vv' # instead of just -v: also show remote-tracking branches
 alias glg='git log --all --graph' # instead of git log --topo-order --graph --pretty=format:"${_git_log_oneline_format}"
-function glcb(){ # git log for current/child branch commits only
+function glcb { # git log for current/child branch commits only
   parent=${1-$(git parent)} # see alias in ~/.gitconfig
   if [ -z "$parent" ]; then
     echo "No parent for current branch!"
@@ -237,12 +237,12 @@ alias gsW='git stash push --keep-index --include-untracked'
 # TODO list stashes and unpushed changes
   # should only list all **/.git/logs/refs/stash
   # find -name stash -print0 | xargs -0 cat
-function git-add-all-submodules(){
+function git-add-all-submodules {
   dir=${1-'.'} # will search in $1 but add in cwd!
   for x in $(find $dir -type d -mindepth 1) ; do if [ -d "${x}/.git" ] ; then cd "${x}" ; origin="$(git config --get remote.origin.url)" ; cd - 1>/dev/null; echo "$x - $origin"; echo -n "    "; git submodule add "${origin}" "${x}" ; fi ; done
 }
 # find all .git directories in $1 or .
-function git-repos(){
+function git-repos {
   dir=${1-'.'}
   if [[ -e $commands[fd] ]]; then
     # https://github.com/sharkdp/fd is 2-5x faster than find for this query
@@ -262,13 +262,13 @@ alias gh-auth='echo "y" | gh auth login -p https -h github.com -w --skip-ssh-key
 
 # git svn
 # git svn doesn't know autostash...
-function autostash(){ git stash | grep 'Saved working directory' && $* && git stash pop -q || $* }
+function autostash { git stash | grep 'Saved working directory' && $* && git stash pop -q || $*; }
 alias sgfr='autostash git svn rebase'
 alias sgc='git commit --verbose && git svn dcommit'
 
 # docker
 alias ld=lazydocker # use \ld to link object files (not really needed since done by gcc/clang)
-function docker-volumes () {
+function docker-volumes {
   for volume in $(docker volume ls --format '{{.Name}}'); do
     echo $volume
     docker ps -a --filter volume="$volume"  --format '{{.Names}}' | sed 's/^/  /'
@@ -276,10 +276,10 @@ function docker-volumes () {
 }
 
 # C
-function gcc-run(){
+function gcc-run {
   gcc $1 && ./a.out && rm -f a.out
 }
-function gcc-eval(){ # needs double escape: gcc-eval 'printf("INT_MAX: %d\\n", INT_MAX)'
+function gcc-eval { # needs double escape: gcc-eval 'printf("INT_MAX: %d\\n", INT_MAX)'
   echo "#include <stdlib.h>\n #include <stdio.h>\n #include <assert.h>\n\
     #include <limits.h>\n #include <stdint.h>\n #include <math.h>\n\
     int main(){ $1; }" >! /tmp/gcc-eval.c &&
@@ -294,7 +294,7 @@ export OCAMLRUNPARAM=b # enable backtraces on error
 export OPAMWITHDOC=true # opam install --with-doc ...
 alias utop='utop -init ~/dotfiles/.ocamlinit-utop -implicit-bindings -require batteries -require goblint-cil'
 alias ocaml='rlwrap -H ~/.ocaml_history -D 2 -i -s 10000 ocaml'
-function ocr(){
+function ocr {
   ocamlc $1 && ./a.out && rm -f a.out
   rm -f $(basename $1 .ml).cm?
 }
@@ -305,7 +305,7 @@ alias ipython='ipython --no-confirm-exit' # don't want to commit .ipython/ and i
 # JS
 alias npx='npx -yes' # don't want 'Ok to proceed? (y)' prompt
 
-function archive(){ # save file(s) as (encrypted) archive to dropbox
+function archive { # save file(s) as (encrypted) archive to dropbox
     dst=~/Dropbox/$1.7z
     rm -f $dst
     7z a -mhe=on -p -l $dst $* # if a password is given, the header will also be encrypted. resolves symlinks.
@@ -326,12 +326,12 @@ function archive(){ # save file(s) as (encrypted) archive to dropbox
 # function fsw(){ fswatch -o $1 | xargs -n1 "$2" }
 # alias c='pygmentize -O style=monokai -f console256 -g'
 
-if [[ -e $commands[gtm] ]]; then
+if [[ -e ${commands[gtm]} ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/gtm-terminal-plugin/gtm-plugin.sh" # git time metric
 fi
 
 # f for fff (file manager, https://github.com/dylanaraps/fff) with cd on exit (q), use ctrl-c to exit w/o cd
-f() {
+function f {
     fff "$@"
     cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
 }
@@ -384,7 +384,7 @@ fi
 #   type is an alias for type -a
 #   type is a shell builtin
 #   type is /usr/bin/type
-function whats() {
+function whats {
   local cmd="$1"
   type "$cmd" # already prints alias definitions, but no definitions for functions
   if [ $? != 0 ]; then return; fi # $cmd not found
@@ -449,7 +449,7 @@ function whats() {
 # all commands are logged with atuin anyway, but we still log all brew commands commented out to have some context
 # get `brew install` commands from atuin's history:
 # sqlite3 ~/.local/share/atuin/history.db 'select command from history where command like "brew install%" order by timestamp desc limit 10'
-function brew() {
+function brew {
   # log every `brew` command commented out with datetime
   echo "# brew $@ # ($(date -Iseconds))" >>! ~/brew.log
 
@@ -480,7 +480,7 @@ function brew() {
 }
 
 # Function to create a dir, cd into it, init git, and open opencode
-function mkg() {
+function gn {
   if [[ -z "$1" ]]; then
     echo "Usage: mkg <directory>"
     return 1
@@ -489,7 +489,7 @@ function mkg() {
 }
 
 # Function to list, search and resume opencode sessions globally
-function opencode-sessions() {
+function opencode-sessions {
   local db_path="$HOME/.local/share/opencode/opencode.db"
   if [[ ! -f "$db_path" ]]; then
     echo "Opencode database not found at $db_path"
@@ -504,7 +504,7 @@ function opencode-sessions() {
   if [[ -n "$selected" ]]; then
     local session_id=$(echo "$selected" | cut -d'|' -f1)
     local session_dir=$(echo "$selected" | cut -d'|' -f2)
-    
+
     if [[ -d "$session_dir" ]]; then
       echo "Changing directory to: $session_dir"
       cd "$session_dir" || return 1
