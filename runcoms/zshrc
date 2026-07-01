@@ -482,7 +482,7 @@ function brew {
 # Function to create a dir, cd into it, init git, and open opencode
 function gn {
   if [[ -z "$1" ]]; then
-    echo "Usage: mkg <directory>"
+    echo "Usage: gn <directory>"
     return 1
   fi
   mkdir -p "$1" && cd "$1" && git init && opencode .
