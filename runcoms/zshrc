@@ -67,6 +67,7 @@ fi
 # shell
 alias v='NVIM_APPNAME=nvim-astro nvim' # 2024-08-28 18:53
 alias c=bat # ~/.config/bat/config
+alias agy='agy --dangerously-skip-permissions'
 
 # fzf
 # find with fzf and open in nvim; same commands as in AstroNvim
