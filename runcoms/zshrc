@@ -453,30 +453,85 @@ function whats {
 # sqlite3 ~/.local/share/atuin/history.db 'select command from history where command like "brew install%" order by timestamp desc limit 10'
 function brew {
   # log every `brew` command commented out with datetime
-  echo "# brew $@ # ($(date -Iseconds))" >>! ~/brew.log
+  echo "# brew $* # ($(date -Iseconds))" >>! ~/brew.log
 
   # pass arguments to brew (`command` avoids recursive function call) to execute command
-  command brew $@
+  command brew "$@"
 
   # log `brew install` commands with size (not in info, only known after the above), description and datetime
-  # TODO this only works for `brew install foo` without any other options
   if [[ "$1" == "install" ]]; then
-    # echo "installed pkgs: ${@:2}"
-    for pkg in ${@:2}; do
-      # desc=$(brew info $pkg --json | jq '.[0].desc' -r) # default v1 json only works for formula
-      desc=$(command brew info $pkg --json=v2 | jq '.formulae[0].desc // .casks[0].desc' -r)
-      # brew --prefix git = /opt/homebrew/opt/git - not helpful since it's just symlink...
-      if [ -e /opt/homebrew/Cellar/$pkg ]; then # formula
-        pkg_path=/opt/homebrew/Cellar/$pkg
-      else # cask
-        pkg_path=/Applications/$(command brew info $pkg --json=v2 | jq '.casks[0].artifacts[] | select(.app).app[0]' -r)
+    local -a pkgs
+    local -a info_args
+    local arg
+    for arg in "${@:2}"; do
+      if [[ "$arg" == -* ]]; then
+        if [[ "$arg" == "--cask" || "$arg" == "--formula" ]]; then
+          info_args+=("$arg")
+        fi
+      else
+        pkgs+=("$arg")
       fi
-      # dus=du -kh -h -d1 $1 | sort -h
-      size=$(du -sh $pkg_path | cut -f1)
+    done
+
+    for pkg in "${pkgs[@]}"; do
+      local info_json
+      info_json=$(command brew info "${info_args[@]}" "$pkg" --json=v2 2>/dev/null)
+      if [[ -z "$info_json" ]] || ! echo "$info_json" | jq -e . >/dev/null 2>&1; then
+        continue
+      fi
+
+      local formula_name cask_token desc
+      formula_name=$(echo "$info_json" | jq '.formulae[0].name // empty' -r)
+      cask_token=$(echo "$info_json" | jq '.casks[0].token // empty' -r)
+      desc=$(echo "$info_json" | jq '.formulae[0].desc // .casks[0].desc // ""' -r)
+
+      local cellar_path="/opt/homebrew/Cellar"
+      local caskroom_path="/opt/homebrew/Caskroom"
+      if [[ ! -d "$cellar_path" ]]; then
+        cellar_path="/usr/local/Cellar"
+        caskroom_path="/usr/local/Caskroom"
+      fi
+
+      local pkg_path=""
+      local use_follow_symlinks=false
+
+      if [[ -n "$formula_name" && -d "$cellar_path/$formula_name" ]]; then
+        pkg_path="$cellar_path/$formula_name"
+      elif [[ -n "$cask_token" && -d "$caskroom_path/$cask_token" ]]; then
+        pkg_path="$caskroom_path/$cask_token"
+        use_follow_symlinks=true
+      fi
+
+      # size=$(du -sh $pkg_path | cut -f1)
       # diskus $pkg_path # this is somehow a bit more than what du reports; both should be disk usage (instead of --apparent-size) and decimal (MB) instead of binary (MiB)
+      local size=""
+      if [[ -n "$pkg_path" && -d "$pkg_path" ]]; then
+        if $use_follow_symlinks; then
+          size=$(du -shL "$pkg_path" 2>/dev/null | cut -f1)
+        else
+          size=$(du -sh "$pkg_path" 2>/dev/null | cut -f1)
+        fi
+      fi
+
+      local size_desc=""
+      if [[ -n "$size" ]]; then
+        size_desc="$size"
+      fi
+      if [[ -n "$desc" && "$desc" != "null" ]]; then
+        if [[ -n "$size_desc" ]]; then
+          size_desc="$size_desc, $desc"
+        else
+          size_desc="$desc"
+        fi
+      fi
+
       echo
       echo "Added to ~/brew.log:"
-      echo "brew install $pkg # $size, $desc ($(date -Iseconds))" | tee -a ~/brew.log
+      if [[ -n "$size_desc" ]]; then
+        echo "brew install ${info_args[*]} $pkg # $size_desc ($(date -Iseconds))" | tee -a ~/brew.log
+      else
+        echo "brew install ${info_args[*]} $pkg # ($(date -Iseconds))" | tee -a ~/brew.log
+      fi
     done
   fi
 }
