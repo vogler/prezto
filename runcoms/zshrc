@@ -135,6 +135,7 @@ function cwdsh { if [[ -z $2 ]]; then eval $1; else pu $2; eval $1; po; fi }
 alias le='eza --long --icons --git --group-directories-first'
 alias lh='cwdsh "ls -d .*"' # only ls hidden files
 alias lah='cwdsh "ls -lhd .*"' # as above but long
+alias tree='lsd --tree'
 alias uniqc='sort | uniq -c | sort'
 # rg does not have fixed place for config file, don't want to set RIPGREP_CONFIG_PATH - https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
 # rg is also used for word search in AstroNvim/Telescope, however, this does not use the alias, so will either need config file after all or configure it for nvim sep.
