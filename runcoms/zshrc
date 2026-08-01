@@ -202,7 +202,7 @@ alias ts2date="perl -Mposix -pe 's/([0-9]{10})/POSIX::strftime( \"%Y-%m-%d %H:%M
 # Note that <elapsed seconds> is 0 most of the time since SHARE_HISTORY is set by prezto which is incompatible with INC_APPEND_HISTORY_TIME. Also see modules/history.
 alias zsh-history="cat ~/.zsh_history | sed 's/^: //; s/:/  /; s/;/\t/' | ts2date | tac | less"
 
-alias mm='mkdir -p ~/pkm/$(date +%Y)/$(date +%m) && v ~/pkm/$(date +%Y)/$(date +%m)/$(date +%d).md'
+alias t='mkdir -p ~/pkm/$(date +%Y)/$(date +%m) && v ~/pkm/$(date +%Y)/$(date +%m)/$(date +%d).md'
 
 # git
 if [[ -e $commands[hub] ]]; then
