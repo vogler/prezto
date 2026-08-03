@@ -477,15 +477,15 @@ function brew {
 
     for pkg in "${pkgs[@]}"; do
       local info_json
-      info_json=$(command brew info "${info_args[@]}" "$pkg" --json=v2 2>/dev/null)
-      if [[ -z "$info_json" ]] || ! echo "$info_json" | jq -e . >/dev/null 2>&1; then
+      info_json=$(command brew info --json=v2 "${info_args[@]}" "$pkg" 2>/dev/null)
+      if [[ -z "$info_json" ]] || ! print -r -- "$info_json" | jq -e . >/dev/null 2>&1; then
         continue
       fi
 
       local formula_name cask_token desc
-      formula_name=$(echo "$info_json" | jq '.formulae[0].name // empty' -r)
-      cask_token=$(echo "$info_json" | jq '.casks[0].token // empty' -r)
-      desc=$(echo "$info_json" | jq '.formulae[0].desc // .casks[0].desc // ""' -r)
+      formula_name=$(print -r -- "$info_json" | jq '.formulae[0].name // empty' -r)
+      cask_token=$(print -r -- "$info_json" | jq '.casks[0].token // empty' -r)
+      desc=$(print -r -- "$info_json" | jq '.formulae[0].desc // .casks[0].desc // ""' -r)
 
       local cellar_path="/opt/homebrew/Cellar"
       local caskroom_path="/opt/homebrew/Caskroom"
