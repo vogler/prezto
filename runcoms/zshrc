@@ -67,6 +67,7 @@ fi
 # shell
 alias v='NVIM_APPNAME=nvim-astro nvim' # 2024-08-28 18:53
 alias c=bat # ~/.config/bat/config
+alias brew-up='brew update && brew upgrade -y --formula && brew autoremove && brew cleanup && brew doctor'
 alias agy='agy --dangerously-skip-permissions'
 
 # fzf
