@@ -527,12 +527,17 @@ function brew {
         fi
       fi
 
+      local extra_flags=""
+      if ((${#info_args[@]} > 0)); then
+        extra_flags="${info_args[*]} "
+      fi
+
       echo
       echo "Added to ~/brew.log:"
       if [[ -n "$size_desc" ]]; then
-        echo "brew install ${info_args[*]} $pkg # $size_desc ($(date -Iseconds))" | tee -a ~/brew.log
+        echo "brew install ${extra_flags}$pkg # $size_desc ($(date -Iseconds))" | tee -a ~/brew.log
       else
-        echo "brew install ${info_args[*]} $pkg # ($(date -Iseconds))" | tee -a ~/brew.log
+        echo "brew install ${extra_flags}$pkg # ($(date -Iseconds))" | tee -a ~/brew.log
       fi
     done
   fi
