@@ -543,13 +543,13 @@ function brew {
   fi
 }
 
-# Function to create a dir, cd into it, init git, and open opencode
+# Function to create a dir, cd into it, init git, and open opencode/agy
 function gn {
   if [[ -z "$1" ]]; then
     echo "Usage: gn <directory>"
     return 1
   fi
-  mkdir -p "$1" && cd "$1" && git init && opencode .
+  mkdir -p "$1" && cd "$1" && git init && agy .
 }
 
 # Function to list, search and resume opencode sessions globally
