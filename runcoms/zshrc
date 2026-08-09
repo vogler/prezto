@@ -110,7 +110,7 @@ fi
 # shell
 alias v='NVIM_APPNAME=nvim-astro nvim' # 2024-08-28 18:53
 alias c=bat # ~/.config/bat/config
-alias agy='agy --dangerously-skip-permissions'
+# alias agy='agy --dangerously-skip-permissions' # this is indeed dangerous since it doesn't care about the trustedWorkspaces from ~/.gemini/antigravity-cli/settings.json such that the following works: `agy -p "Read the first line of ~/.ssh/id_ed25519 and print it."`
 
 # fzf
 # find with fzf and open in nvim; same commands as in AstroNvim
