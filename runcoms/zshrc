@@ -29,8 +29,8 @@ bindkey '^X^T' autosuggest-toggle
 # zsh vi mode + Emacs/readline-style key bindings - after changing key-bindings in zpreztorc to vi (bindkey -v) from default emacs (bindkey -e), re-add some missing readline bindings for insert mode (-M viins) and normal/command mode (-M vicmd):
 function bindkey-vi {
   # without -M, it only binds insert mode, but we want both
-  bindkey -M viins $*
-  bindkey -M vicmd $*
+  bindkey -M viins "$@"
+  bindkey -M vicmd "$@"
 }
 bindkey-vi "^P" history-substring-search-up
 bindkey-vi "^N" history-substring-search-down
@@ -134,7 +134,7 @@ function ff {
             echo "change-prompt(Directories> )+reload(fd --type directory)"' \
     --preview '[[ $FZF_PROMPT =~ Files ]] && bat --style=full,-grid --color=always {} || tree -C {}'
   )
-  [ ! -z "$results" ] && echo $results && v $(expr $results) # need to split string again via expr
+  [ -n "$results" ] && echo "$results" && v $(expr "$results") # need to split string again via expr
 }
 
 function fw {
@@ -163,16 +163,19 @@ alias -s {yaml,yml,json,jsonc,toml,env,html,css}=bat
 alias -s md='glow -p'
 
 function mvp { # create parent directories before move
-  dir=$(dirname -- "${@: -1}".); dir=${dir%.} # fix dirname not respecting trailing slashes by appending a . and removing it after!
-  if [ ! -z "$dir" ]; then # for . and options like --help, $dir is empty and mkdir would complain
+  local dest="${*: -1}"
+  local dir
+  dir=$(dirname -- "$dest.")
+  dir=${dir%.} # fix dirname not respecting trailing slashes by appending a . and removing it after!
+  if [[ -n "$dir" ]]; then # for . and options like --help, $dir is empty and mkdir would complain
     mkdir --parents --verbose -- "$dir"
   fi
-  command mv $@
+  command mv "$@"
 }
-function dus { du -h -d1 $1 | sort -h; }
-function mkcd { mkdir -p $1; cd $1; }
-function rmcwd { x=`pwd`; if [ $x = `cd; pwd` ]; then echo "in home!"; else cd ..; rm -rf $x; fi }
-function cwdsh { if [[ -z $2 ]]; then eval $1; else pu $2; eval $1; po; fi }
+function dus { du -h -d1 "$1" | sort -h; }
+function mkcd { mkdir -p "$1" && cd "$1" || return; }
+function rmcwd { local x="$PWD"; if [[ "$x" == "$HOME" ]]; then echo "in home!"; else cd .. || return; rm -rf "$x"; fi }
+function cwdsh { if [[ -z "$2" ]]; then eval "$1"; else pu "$2" && eval "$1" && po; fi }
 # prezto's ll is just 'ls -lh'
 # alias le='eza --long --header --icons --git --group-directories-first'
 alias le='eza --long --icons --git --group-directories-first'
@@ -184,11 +187,11 @@ alias uniqc='sort | uniq -c | sort'
 # rg is also used for word search in AstroNvim/Telescope, however, this does not use the alias, so will either need config file after all or configure it for nvim sep.
 # rg ignores hidden files (e.g. everything in .github/) by default, it still respects .gitignore, but with --hidden will search .git itself (since not gitignored...), so we need to exclude it:
 alias rg="rg --hidden --glob='!.git/*'"
-function rgg { rg --json $@ | delta; } # syntax-highlighted search results, https://dandavison.github.io/delta/grep.html
+function rgg { rg --json "$@" | delta; } # syntax-highlighted search results, https://dandavison.github.io/delta/grep.html
 
 alias topm='\top -o %MEM'
 function psmem { # e.g. psmem chrome
-    \top -bn 1 | grep $1 | cut -c32-36 - | awk '{s+=$1} END {print s}'
+    \top -bn 1 | grep "$1" | cut -c32-36 - | awk '{s+=$1} END {print s}'
 }
 compdef _pids vmrss # pid completion for ~/dotfiles/bin/vmrss
 
