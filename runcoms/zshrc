@@ -49,11 +49,8 @@ bindkey-vi '^Y' yank                   # Ctrl+Y
 function alias_rhs { alias $1 | sed -E "s/^$1='(.*)'$/\\1/"; }
 function alias_re { alias $1="$(alias_rhs $2)"; unalias $2; }
 
-# macOS
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
 # debian/ubuntu
-if [[ -e $commands[apt] ]]; then
+if [[ -e ${commands[apt]} ]]; then
   alias agi='sudo apt install'
   alias agx='sudo apt remove' # keeps config files
   alias agX='sudo apt purge' # also removes config files
@@ -64,10 +61,51 @@ if [[ -e $commands[apt] ]]; then
   alias agd='apt show'
 fi
 
+# macOS
+if [[ "$OSTYPE" == darwin* ]]; then
+  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+  # default upgrade commands, leave casks alone
+  alias brew-up='brew update && brew upgrade -y --formula && brew autoremove && brew cleanup && brew doctor'
+  # Upgrades casks one by one & clears cache per app to prevent running out of disk space
+  brew-up-casks() {
+    setopt localtraps
+    unsetopt monitor
+    TRAPINT() {
+      echo -e "\n🛑 Aborted by user."
+      return 130
+    }
+
+    echo "📋 Outdated Casks:"
+    brew outdated --cask
+
+    # Extract unpinned casks (silence ShellCheck's Zsh array warning)
+    # shellcheck disable=SC2207
+    local casks=($(brew outdated --cask | grep -v '\[pinned' | awk '{print $1}'))
+
+    if [[ ${#casks[@]} -eq 0 ]]; then
+      echo -e "\n✨ No unpinned casks to upgrade."
+      return 0
+    fi
+
+    echo -e "\n🚀 Upgrading ${#casks[@]} unpinned cask(s) sequentially..."
+    for cask in "${casks[@]}"; do
+      brew upgrade --cask --force "$cask"
+      local exit_code=$?
+
+      # Backup check if Homebrew returns exit code 130
+      if [[ $exit_code -eq 130 ]]; then
+        echo -e "\n🛑 Aborted by user."
+        return 130
+      fi
+
+      brew cleanup --prune=all
+    done
+  }
+fi
+
 # shell
 alias v='NVIM_APPNAME=nvim-astro nvim' # 2024-08-28 18:53
 alias c=bat # ~/.config/bat/config
-alias brew-up='brew update && brew upgrade -y --formula && brew autoremove && brew cleanup && brew doctor'
 alias agy='agy --dangerously-skip-permissions'
 
 # fzf
