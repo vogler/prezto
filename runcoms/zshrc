@@ -45,9 +45,13 @@ bindkey-vi '^[d' kill-word             # Alt/Meta-d
 bindkey-vi '^Y' yank                   # Ctrl+Y
 # bindkey -M emacs -L   # list all emacs keybindings
 
-# there's no simple way to rename an existing alias... wanted to redefine exisiting gdu as gdU and then unalias gdu for gdu-go
-function alias_rhs { alias $1 | sed -E "s/^$1='(.*)'$/\\1/"; }
-function alias_re { alias $1="$(alias_rhs $2)"; unalias $2; }
+# Renames an existing alias ($2 -> $1) if it exists, avoiding unalias warnings when re-sourcing zshrc (e.g. gdu -> gdU)
+function rename_alias {
+  if (( $+aliases[$2] )); then
+    alias "$1"="${aliases[$2]}"
+    unalias "$2"
+  fi
+}
 
 # debian/ubuntu
 if [[ -e ${commands[apt]} ]]; then
@@ -248,10 +252,9 @@ if [[ -e $commands[hub] ]]; then
   alias git=hub # https://github.com/cli/cli/blob/trunk/docs/gh-vs-hub.md
 fi
 alias lg=lazygit
-# alias gdU='git ls-files --other --exclude-standard'
-# alias gdU="$(alias_rhs gdu)"
+# alias gdU='git ls-files --other --exclude-standard' # prezto's gdu
 # unalias gdu # better ncdu (disk usage); ~/.local/bin/gdu -> /opt/homebrew/bin/gdu-go
-alias_re gdU gdu
+rename_alias gdU gdu
 alias gwd="git diff --no-ext-diff -- ':!/**package-lock.json' ':!**yarn.lock' ':!**pnpm-lock.yaml'" # git diff: don't show changes in lock files
 alias gwD='git diff --no-ext-diff --word-diff=color' # prezto has mode plain (uses color and delimiters [-removed-] and {+added+}) as default
 alias giD='git diff --no-ext-diff --cached --word-diff=color'
