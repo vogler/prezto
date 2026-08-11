@@ -95,14 +95,36 @@ if [[ "$OSTYPE" == darwin* ]]; then
     echo -e "\n📋 Outdated Unpinned Casks (${#casks[@]} total):"
     printf '  • %s\n' "${casks[@]}"
 
-    # Request sudo access only when there are casks to upgrade
-    echo -e "\n🔐 Requesting sudo access for upgrades..."
-    sudo -v || return 1
+    # Set up temporary SUDO_ASKPASS helper so Homebrew subprocesses don't prompt for password
+    local passfile=$(mktemp "${TMPDIR:-/tmp}/brew_up_pass.XXXXXX")
+    local askpass=$(mktemp "${TMPDIR:-/tmp}/brew_up_askpass.XXXXXX")
+    chmod 600 "$passfile"
+    chmod 700 "$askpass"
 
-    # Keep-alive: update existing sudo timestamp in background until function exits
-    while true; do sudo -n true 2>/dev/null; sleep 50; done 2>/dev/null &
+    trap 'rm -f "$passfile" "$askpass" 2>/dev/null; kill "$sudo_pid" 2>/dev/null; unset SUDO_ASKPASS' EXIT
+
+    read -r -s "?🔐 Enter sudo password for upgrades: " pass_input
+    echo ""
+
+    if [[ -z "$pass_input" ]]; then
+      echo "❌ Password cannot be empty."
+      return 1
+    fi
+
+    printf '%s' "$pass_input" >| "$passfile"
+    printf '#!/bin/sh\ncat "%s"\n' "$passfile" >| "$askpass"
+    chmod +x "$askpass"
+    export SUDO_ASKPASS="$askpass"
+
+    # Validate password upfront
+    if ! sudo -A -v 2>/dev/null; then
+      echo "❌ Incorrect sudo password."
+      return 1
+    fi
+
+    # Keep timestamp refreshed in background
+    while true; do sudo -A -n true 2>/dev/null; sleep 50; done 2>/dev/null &
     local sudo_pid=$!
-    trap "kill $sudo_pid 2>/dev/null" EXIT
 
     echo -e "\n🚀 Upgrading ${#casks[@]} unpinned cask(s) sequentially..."
     for cask in "${casks[@]}"; do
@@ -111,7 +133,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
       fi
 
       # Refresh sudo timestamp before upgrading each cask
-      sudo -n true 2>/dev/null
+      sudo -A -n true 2>/dev/null
 
       brew upgrade --cask --force "$cask"
       local exit_code=$?
