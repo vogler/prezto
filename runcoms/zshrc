@@ -154,7 +154,7 @@ fi
 alias v=nvim # ~/.config/nvim -> nvim-astro
 alias c=bat # ~/.config/bat/config
 # alias agy='agy --dangerously-skip-permissions' # this is indeed dangerous since it doesn't care about the trustedWorkspaces from ~/.gemini/antigravity-cli/settings.json such that the following works: `agy -p "Read the first line of ~/.ssh/id_ed25519 and print it."`; do not add "read_file(*)" to permissions.allow since that would allow access outside of trustedWorkspaces
-alias agy='agy --sandbox' # without sandbox, commands can access files outside of trustedWorkspaces: e.g. run `head -n1 ~/.ssh/id_ed25519`
+# alias agy='agy --sandbox' # without sandbox, commands can access files outside of trustedWorkspaces: e.g. run `head -n1 ~/.ssh/id_ed25519`, but with sandbox some commands that require network/tmp don't work... so, added ~/.ssh/** etc. to permissions.deny
 
 # fzf
 # find with fzf and open in nvim; same commands as in AstroNvim
