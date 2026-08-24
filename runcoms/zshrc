@@ -637,7 +637,7 @@ function gn {
     echo "Usage: gn <directory>"
     return 1
   fi
-  mkdir -p "$1" && cd "$1" && git init && agy --add-dir "$(realpath .)" .
+  mkdir -p "$1" && cd "$1" && git init && agy --add-dir "$(realpath .)"
 }
 
 # Function to list, search and resume opencode sessions globally
