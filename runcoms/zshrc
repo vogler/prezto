@@ -5,6 +5,12 @@
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
 
+# On SSH login, if tuios is installed, attach to its last session (or create one); otherwise prezto auto-starts tmux (see zpreztorc).
+# Detaching from tuios ends the SSH session.
+if [[ -n "$SSH_TTY" && -z "$TUIOS_ENV" && -o interactive ]] && (( $+commands[tuios] )); then
+  exec tuios attach
+fi
+
 local ts=$(date "+%A, %d %B %Y at %T")
 printf '\e[38;5;238m--- Session Start --- %s ---\e[0m\n' "$ts"
 
