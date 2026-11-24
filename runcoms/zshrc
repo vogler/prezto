@@ -306,9 +306,6 @@ alias zsh-history="cat ~/.zsh_history | sed 's/^: //; s/:/  /; s/;/\t/' | ts2dat
 alias t='mkdir -p ~/pkm/$(date +%Y)/$(date +%m) && v ~/pkm/$(date +%Y)/$(date +%m)/$(date +%d).md'
 
 # git
-if [[ -e $commands[hub] ]]; then
-  alias git=hub # https://github.com/cli/cli/blob/trunk/docs/gh-vs-hub.md
-fi
 alias lg=lazygit
 # alias gdU='git ls-files --other --exclude-standard' # prezto's gdu
 # unalias gdu # better ncdu (disk usage); ~/.local/bin/gdu -> /opt/homebrew/bin/gdu-go
