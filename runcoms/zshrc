@@ -228,6 +228,12 @@ function rmcwd { local x="$PWD"; if [[ "$x" == "$HOME" ]]; then echo "in home!";
 function cwdsh { if [[ -z "$2" ]]; then eval "$1"; else pu "$2" && eval "$1" && po; fi }
 alias ls='eza --group-directories-first --hyperlink=auto --icons=auto' # prezto's ll is just 'ls -lh'
 alias ll='eza --group-directories-first --hyperlink=auto --icons=auto --long --git' # prezto's ll is just 'ls -lh'
+# prezto's derived aliases use GNU/BSD ls flags that eza parses differently (e.g. -t takes a field, -S is blocksize)
+alias lk='ll --sort=size'                           # sorted by size, largest last
+alias lt='ll --sort=modified'                       # sorted by date, most recent last
+alias lc='ll --sort=changed --time=changed'         # as lt, but change time
+alias lu='ll --sort=accessed --time=accessed'       # as lt, but access time
+alias lx='ll --sort=extension'                      # sorted by extension
 alias lh='cwdsh "ls -d .*"' # only ls hidden files
 alias lah='cwdsh "ls -lhd .*"' # as above but long
 alias tree='lsd --tree'
